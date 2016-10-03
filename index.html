@@ -3,12 +3,50 @@
   <head>
     <meta charset="utf-8">
     <title>zMemo</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href='src/style/bootstrap.css'>
+    <link rel="stylesheet" href='src/style/main.css'>
   </head>
   <body>
     <div id="app">
+      <div id="z-memo" class="container">
 
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed show-search-con" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              </button>
+              <a class="navbar-brand" href="#">zMemo</a>
+            </div>
+
+            <form class="navbar-form collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+              <input type="text" class="form-control" placeholder="Search">
+            </form>
+
+            <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true">分类 <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">所有分类</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">工作</a></li>
+                  <li><a href="#">生活</a></li>
+                  <li><a href="#">学习</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">新增分类</a></li>
+                </ul>
+              </li>
+            </ul>
+
+          </div><!-- /.container-fluid -->
+        </nav>
+
+      </div>
     </div>
+    <script src="src/script/jquery-3.1.1.js"></script>
+    <script src="src/script/bootstrap.min.js"></script>
+    <script src="src/script/main.js"></script>
     <script src="dist/build.js"></script>
   </body>
 </html>

@@ -1,0 +1,22 @@
+#z-memo {
+  margin-top: 24px;
+  min-height: 300px;
+  border: 1px solid #e1e1e1;
+  box-shadow: 0 0 4px 0 #e1e1e1;
+  padding: 0;
+}
+
+#z-memo > nav {
+  border-radius: 0;
+}
+
+.show-search-con {
+  width: 30px;
+  height: 30px;
+  background-image: url("../image/icon-search.png");
+}
+
+.markers button {
+  width: 12px;
+  line-height: 12px;
+}
