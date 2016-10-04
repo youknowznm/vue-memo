@@ -2,47 +2,112 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>zMemo</title>
+    <title>vue-memo</title>
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
     <link rel="stylesheet" href='src/style/bootstrap.css'>
     <link rel="stylesheet" href='src/style/main.css'>
   </head>
   <body>
+    <div class="fullscreen-layer"></div>
+
     <div id="app">
-      <div id="z-memo" class="container">
+      <div id="vue-memo">
 
         <nav class="navbar navbar-default">
           <div class="container-fluid">
-
             <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed show-search-con" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-              </button>
-              <a class="navbar-brand" href="#">zMemo</a>
+              <a class="navbar-brand">vue-memo</a>
             </div>
-
-            <form class="navbar-form collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
-              <input type="text" class="form-control" placeholder="Search">
-            </form>
-
-            <ul class="nav navbar-nav navbar-right">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true">分类 <span class="caret"></span></a>
+            <ul class="nav navbar-nav">
+              <li class="add dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="li">新建</a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">所有分类</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li><a href="#">工作</a></li>
-                  <li><a href="#">生活</a></li>
-                  <li><a href="#">学习</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li><a href="#">新增分类</a></li>
+                  <li class="add-text">
+                    <a href="#">
+                      文本
+                    </a>
+                  </li>
+                  <li class="add-doodle">
+                    <a href="#">
+                      涂鸦
+                    </a>
+                  </li>
                 </ul>
               </li>
             </ul>
-
-          </div><!-- /.container-fluid -->
+            <form class="navbar-form navbar-right">
+              <input type="text" class="search-box form-control" placeholder="搜索">
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="categories dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="li">分类<span class="memo-count badge">14</span> </a>
+                <ul class="dropdown-menu">
+                  <li class="total">
+                    <a href="#">
+                      全部<span class="memo-count badge">14</span>
+                    </a>
+                  </li>
+                  <li role="separator" class="divider"></li>
+                  <li class="category">
+                    <a href="#">
+                      工作<span class="memo-count badge">14</span>
+                    </a>
+                  </li>
+                  <li class="category">
+                    <a href="#">
+                      生活<span class="memo-count badge">14</span>
+                    </a>
+                  </li>
+                  <li class="category">
+                    <a href="#">
+                      学习<span class="memo-count badge">14</span>
+                    </a>
+                  </li>
+                  <li role="separator" class="divider"></li>
+                  <li class="category"><a href="#">新增分类</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
         </nav>
 
+        <div class="memos">
+
+          <div class="memo-container">
+            <div class="memo">
+              <div class="mark"></div>
+              <ul class="controllers">
+                <li class="edit"></li>
+                <li class="delete"></li>
+              </ul>
+              <h5 class="title">标题标题标题标题标题标题标题标题标题标题标题</h5>
+              <div class="content text">
+                <p>Screen readers will have trouble with your forms if you don't include a label for every input. For these inline forms, you can hide the labels using the .sr-only class. There are further alternative methods of providing a label for assistive technologies, such as the aria-label, aria-labelledby or title attribute. If none of these is present, screen readers may resort to using the placeholder attribute, if present, but note that use of placeholder as a replacement fo</p>
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+        </div>
       </div>
+
+      <div class="edit-text popup">
+        <ul class="controllers">
+          <li class="save"></li>
+          <li class="cancel"></li>
+        </ul>
+        <input type="text" class="edit-title form-control" placeholder="标题" aria-describedby="basic-addon1">
+        <textarea class="edit-content form-control" resize="false" placeholder="内容"></textarea>
+      </div>
+
+      <!-- <div class="add-doodle popup">
+        <input class="add-title"></input>
+        <canvas class="add-content"></canvas>
+      </div> -->
+
     </div>
     <script src="src/script/jquery-3.1.1.js"></script>
     <script src="src/script/bootstrap.min.js"></script>

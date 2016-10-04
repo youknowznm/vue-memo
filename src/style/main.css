@@ -1,22 +1,207 @@
-#z-memo {
-  margin-top: 24px;
-  min-height: 300px;
+/*
+tint-grey
+  #e1e1e1
+grey
+  #bdbdbd
+dark-grey
+  #757575
+
+tint-blue
+  #4dabf5
+blue
+  #2196f3
+dark-blue
+  #207FDC
+
+*/
+
+* {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  list-style: none;
+  text-decoration: none;
+}
+
+.fullscreen-layer {
+  /*display: none;*/
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  opacity: .5;
+  z-index: 2;
+}
+
+#vue-memo {
   border: 1px solid #e1e1e1;
   box-shadow: 0 0 4px 0 #e1e1e1;
   padding: 0;
+  z-index: 1;
 }
 
-#z-memo > nav {
+#vue-memo > nav {
   border-radius: 0;
+  margin-bottom: 0;
+}
+nav .dropdown-toggle {
+  position: relative;
+  padding-right: 45px !important;
+}
+nav .dropdown-toggle::after {
+  content: ' ';
+  width: 24px;
+  height: 24px;
+  background: url("../image/icon-dropdown.png") 0 0 no-repeat;
+  position: absolute;
+  right: 18px;
+  top: 13px;
+  opacity: .6;
 }
 
-.show-search-con {
-  width: 30px;
-  height: 30px;
-  background-image: url("../image/icon-search.png");
+.memo-count {
+  border-radius: 5px;
+  float: right;
+  margin-top: 3px;
 }
 
-.markers button {
-  width: 12px;
-  line-height: 12px;
+.dropdown-toggle .memo-count {
+  float: none;
+  margin: -2px 6px 0 9px;
+}
+
+.dropdown-menu > li > a {
+  line-height: 24px !important;
+}
+.new-memo {
+  margin-left: 12px;
+  margin-right: 12px;
+}
+.memos {
+  height: 1000px;
+  padding: 0 6px;
+  background: url("../image/pixels.png") repeat;
+}
+.memo-container {
+  width: 50%;
+  float: left;
+  padding: 6px;
+}
+@media (min-width: 768px) and (max-width: 992px){
+  .memo-container {
+    width: 33.3%;
+  }
+}
+@media (min-width: 992px){
+  .memo-container {
+    width: 25%;
+  }
+}
+.memo {
+  position: relative;
+  margin-top: 20px;
+  border: 1px solid #bdbdbd;
+  border-radius: 5px;
+  background-color: #fff;
+  padding: 6px 12px;
+}
+.memo:hover {
+  border-color: #207FDC;
+}
+.memo:hover .mark {
+  display: block;
+}
+.memo .mark {
+  display: none;
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: -8px;
+  left: -8px;
+  border-radius: 50%;
+  background: #4dabf5 url("../image/done.svg") no-repeat 3px 3px;
+  background-size: 18px 18px;
+  transition: all .2s;
+  cursor: pointer;
+}
+.memo .mark:hover {
+  transform: scale(1.2);
+}
+.controllers {
+  position: absolute;
+  top: 12px;
+  right: 10px;
+}
+.controllers li {
+  width: 20px;
+  height: 20px;
+  float: left;
+  margin-left: 10px;
+  opacity: .5;
+  transition: all .2s;
+  cursor: pointer;
+}
+.controllers li:hover {
+  opacity: 1;
+}
+.controllers li.edit {
+  background: url("../image/icon-edit.png") no-repeat 0 0;
+}
+.controllers li.delete {
+  background: url("../image/icon-delete.png") no-repeat 0 0;
+}
+.controllers li.save {
+  background: url("../image/icon-save.png") no-repeat 0 0;
+}
+.controllers li.cancel {
+  background: url("../image/icon-cancel.png") no-repeat 0 0;
+}
+.memo .title {
+  text-indent: 6px;
+  margin-top: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: calc(100% - 60px);
+}
+.memo .content {
+  width: 100%;
+  height: calc(100% - 50px);
+  background-color: rgb(248, 248, 248);
+  bottom: 12px;
+}
+.memo .content.text {
+  padding: 12px;
+  overflow-y: scroll;
+  text-overflow: ellipsis;
+}
+
+.popup {
+  position: absolute;
+  width: 80%;
+  max-width: 500px;
+  min-width: 280px;
+  margin: 0 auto;
+  top: 50%;
+  left: 50%;
+  background-color: rgb(248, 248, 248);
+  z-index: 3;
+  padding: 24px;
+  border: 1px solid rgb(248, 248, 248);
+  border-radius: 3px;
+  box-shadow: 0 0 6px 0 rgb(248, 248, 248);
+}
+.popup .controllers {
+  top: 28px;
+  right: 22px;
+}
+.popup .edit-title {
+  width: calc(100% - 66px);
+  margin-bottom: 12px;
+}
+.popup .edit-content {
 }
