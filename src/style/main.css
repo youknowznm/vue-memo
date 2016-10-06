@@ -23,6 +23,7 @@ dark-blue
   text-decoration: none;
 }
 
+
 .fullscreen-layer {
   /*display: none;*/
   position: absolute;
@@ -162,7 +163,7 @@ nav .dropdown-toggle::after {
   text-indent: 6px;
   margin-top: 8px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #bdbdbd;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -188,7 +189,7 @@ nav .dropdown-toggle::after {
   margin: 0 auto;
   top: 50%;
   left: 50%;
-  background-color: rgb(248, 248, 248);
+  background-color: #fff;
   z-index: 3;
   padding: 24px;
   border: 1px solid rgb(248, 248, 248);
@@ -199,9 +200,13 @@ nav .dropdown-toggle::after {
   top: 28px;
   right: 22px;
 }
-.popup .edit-title {
+.popup #edit-title {
   width: calc(100% - 66px);
   margin-bottom: 12px;
 }
-.popup .edit-content {
+
+.popup #edit-doodle-content {
+  margin-top: 6px;
+  background-color: rgb(248, 248, 248);
+
 }

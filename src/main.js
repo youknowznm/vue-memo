@@ -6,12 +6,12 @@
 //   render: h => h(App)
 // })
 
-$(window).on('resize load', () => {
+$(window).on('resize load', function() {
   //
-  const memoWidth = $('.memo').eq(0).width();
+  var memoWidth = $('.memo').eq(0).width();
   $('.memo').height(memoWidth + 50);
   //
-  let popupTargetHeight = $('.popup').width() + 50;
+  var popupTargetHeight = $('.popup').width() + 50;
   $('.popup')
     .height(popupTargetHeight)
     .css('marginTop', -(popupTargetHeight / 2))
@@ -24,27 +24,31 @@ $(window).on('resize load', () => {
 
 });
 
-$('body').on('mousemove', (e) => {
+$('body').on('mousemove', function(e) {
+  bcgOffsetX = Math.ceil(e.pageX / 30);
+  bcgOffsetY = Math.ceil(e.pageY / 30);
   $('.memos')
-    .css('background-position-x', Math.ceil(e.pageX / 30))
-    .css('background-position-y', Math.ceil(e.pageY / 30));
+    .css('background-position-x', bcgOffsetX)
+    .css('background-position-y', bcgOffsetY);
 });
 
 
-const getDoodle = (canvasEle, imageData) => {
+var getDoodle = function(canvasEle, imageData) {
   // console.log(canvasEle.offsetLeft, canvas.offsetTop);
-  let canvas = $(canvasEle);
-  let colors = document.createElement('ul');
-  $(colors)
-    .html(`
-      <li class="black"></li>
-      <li class="green"></li>
-      <li class="yellow"></li>
-      <li class="red"></li>
-      <li class="white"></li>
-    `)
-    .css('position')
-  const colorTable = [
+  var canvas = $(canvasEle);
+  var colors = document.createElement('ul');
+  $('colors')
+    .addClass('')
+  // colors.
+  // <ul class="colors">
+  //   <li class="black"
+  //     v-for="color in colors"
+  //     :class="color.name"
+  //     :data-selected="color.name === selectedColor.name ? true : false"
+  //     @click="setColor(color.name)">
+  //   </li>
+  // </ul>`;
+  var colors = [
     {
       name: 'black',
       regularCode: '#222',

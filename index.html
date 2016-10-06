@@ -3,8 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>vue-memo</title>
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
-    <link rel="stylesheet" href='src/style/bootstrap.css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href='src/style/main.css'>
   </head>
   <body>
@@ -94,24 +93,28 @@
         </div>
       </div>
 
-      <div class="edit-text popup">
+      <!-- <div id="edit-text" class="popup">
         <ul class="controllers">
           <li class="save"></li>
           <li class="cancel"></li>
         </ul>
-        <input type="text" class="edit-title form-control" placeholder="标题" aria-describedby="basic-addon1">
-        <textarea class="edit-content form-control" resize="false" placeholder="内容"></textarea>
-      </div>
-
-      <!-- <div class="add-doodle popup">
-        <input class="add-title"></input>
-        <canvas class="add-content"></canvas>
+        <input id="edit-title" type="text" class="edit-title form-control" placeholder="标题（20字以内）">
+        <textarea id="edit-text-content" class="form-control" resize="false" placeholder="内容"></textarea>
       </div> -->
 
+      <div id="edit-doodle" class="popup">
+        <ul class="controllers">
+          <li class="save"></li>
+          <li class="cancel"></li>
+        </ul>
+        <input id="edit-title" type="text" class="form-control" placeholder="标题"></input>
+        <canvas id="edit-doodle-content"></canvas>
+      </div>
+
     </div>
-    <script src="src/script/jquery-3.1.1.js"></script>
-    <script src="src/script/bootstrap.min.js"></script>
-    <script src="src/script/main.js"></script>
+    <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="src/main.js"></script>
     <script src="dist/build.js"></script>
   </body>
 </html>
