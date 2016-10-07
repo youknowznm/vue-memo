@@ -12,8 +12,21 @@ blue
   #2196f3
 dark-blue
   #207FDC
-
 */
+
+/*****  decoration  *****/
+.tools > li,
+.controllers > li {
+  opacity: .5;
+  transition: opacity .2s;
+}
+.tools > li:hover,
+.controllers > li:not(.disabled):hover {
+  cursor: pointer;
+  opacity: 1;
+}
+
+/*****  global  *****/
 
 * {
   padding: 0;
@@ -23,18 +36,7 @@ dark-blue
   text-decoration: none;
 }
 
-
-.fullscreen-layer {
-  /*display: none;*/
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #333;
-  opacity: .5;
-  z-index: 2;
-}
+/*****  main  *****/
 
 #vue-memo {
   border: 1px solid #e1e1e1;
@@ -43,15 +45,17 @@ dark-blue
   z-index: 1;
 }
 
-#vue-memo > nav {
+/*****  header  *****/
+
+.navbar {
   border-radius: 0;
   margin-bottom: 0;
 }
-nav .dropdown-toggle {
+.navbar .dropdown-toggle {
   position: relative;
   padding-right: 45px !important;
 }
-nav .dropdown-toggle::after {
+.navbar .dropdown-toggle::after {
   content: ' ';
   width: 24px;
   height: 24px;
@@ -61,24 +65,20 @@ nav .dropdown-toggle::after {
   top: 13px;
   opacity: .6;
 }
-
-.memo-count {
+.count {
   border-radius: 5px;
   float: right;
   margin-top: 3px;
 }
-
-.dropdown-toggle .memo-count {
+.current-category .count {
   float: none;
   margin: -2px 6px 0 9px;
 }
-
-.dropdown-menu > li > a {
+.add-text a,
+.category a {
   line-height: 24px !important;
 }
-.new-memo {
-  margin-left: 12px;
-  margin-right: 12px;
+.create-new {
 }
 .memos {
   height: 1000px;
@@ -89,16 +89,6 @@ nav .dropdown-toggle::after {
   width: 50%;
   float: left;
   padding: 6px;
-}
-@media (min-width: 768px) and (max-width: 992px){
-  .memo-container {
-    width: 33.3%;
-  }
-}
-@media (min-width: 992px){
-  .memo-container {
-    width: 25%;
-  }
 }
 .memo {
   position: relative;
@@ -130,33 +120,27 @@ nav .dropdown-toggle::after {
 .memo .mark:hover {
   transform: scale(1.2);
 }
-.controllers {
+.tools {
   position: absolute;
   top: 12px;
   right: 10px;
 }
-.controllers li {
+.tools li {
   width: 20px;
   height: 20px;
   float: left;
   margin-left: 10px;
-  opacity: .5;
-  transition: all .2s;
-  cursor: pointer;
 }
-.controllers li:hover {
-  opacity: 1;
-}
-.controllers li.edit {
+.tools li.edit {
   background: url("../image/icon-edit.png") no-repeat 0 0;
 }
-.controllers li.delete {
+.tools li.delete {
   background: url("../image/icon-delete.png") no-repeat 0 0;
 }
-.controllers li.save {
+.tools li.save {
   background: url("../image/icon-save.png") no-repeat 0 0;
 }
-.controllers li.cancel {
+.tools li.cancel {
   background: url("../image/icon-cancel.png") no-repeat 0 0;
 }
 .memo .title {
@@ -181,7 +165,20 @@ nav .dropdown-toggle::after {
   text-overflow: ellipsis;
 }
 
-.popup {
+/*****  layers  *****/
+
+.cover-layer {
+  /*display: none;*/
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  opacity: .5;
+  z-index: 2;
+}
+.editor-layer {
   position: absolute;
   width: 80%;
   max-width: 500px;
@@ -196,17 +193,122 @@ nav .dropdown-toggle::after {
   border-radius: 3px;
   box-shadow: 0 0 6px 0 rgb(248, 248, 248);
 }
-.popup .controllers {
-  top: 28px;
-  right: 22px;
+.editor-top {
+  position: relative;
+  width: 100%;
 }
-.popup #edit-title {
+.editor-top .tools {
+  float: right;
+  top: 6px;
+  right: 0;
+}
+.editor-top #editor-title {
   width: calc(100% - 66px);
-  margin-bottom: 12px;
+}
+.editor-layer #editor-text-content {
+  margin-top: 18px;
+  resize: none;
+}
+#editor-doodle {
+  width: 348px;
+  height: 398px;
+  margin-left: calc(-348px / 2);
+  margin-top: calc((-398px / 2));
+  cursor: pointer;
+}
+#editor-doodle * {
+  cursor: pointer;
+}
+#editor-doodle #canvas-wrapper {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  bottom: 24px;
+}
+#canvas-wrapper #editor-doodle-content {
+  border: 1px solid #bdbdbd;
+  cursor: pointer;
+}
+#canvas-wrapper .colors {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  padding: 6px;
+}
+#canvas-wrapper .colors > li {
+  float: left;
+  width: 16px;
+  height: 16px;
+  margin-left: 6px;
+  border: 2px solid #222;
+  border-radius: 50%;
+  transition: .2s;
+}
+#canvas-wrapper .colors > li:hover,
+#canvas-wrapper .colors > li.current {
+  box-shadow: 0 0 4px #222;
+}
+#canvas-wrapper .colors [data-color=green] {
+  background-color: #5cb85c;
+}
+#canvas-wrapper .colors [data-color=yellow] {
+  background-color: #f0ad4e;
+}
+#canvas-wrapper .colors [data-color=red] {
+  background-color: #d9534f;
+}
+#canvas-wrapper .colors [data-color=black] {
+  background-color: #222;
+}
+#canvas-wrapper .colors [data-color=white] {
+  background-color: #fff;
+}
+#canvas-wrapper .controllers {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+#canvas-wrapper .controllers > li {
+  float: left;
+  width: 24px;
+  height: 24px;
+}
+#canvas-wrapper .controllers .undo {
+  background: url("../image/icon-undo.png") no-repeat 2px 2px;
+  background-size: 83.3%;
+}
+#canvas-wrapper .controllers .redo {
+  background: url("../image/icon-redo.png") no-repeat 2px 2px;
+  background-size: 83.3%;
+}
+#canvas-wrapper .controllers .clear {
+  background: url("../image/icon-clear.png") no-repeat 2px 2px;
+  background-size: 83.3%;
 }
 
-.popup #edit-doodle-content {
-  margin-top: 6px;
-  background-color: rgb(248, 248, 248);
+/*****  reset  *****/
 
+@media (max-width: 325px) {
+  #editor-doodle {
+    padding: 5px;
+    width: 310px;
+    height: 360px;
+    margin-left: -155px;
+  }
+  #editor-doodle #canvas-wrapper {
+    bottom: 5px;
+  }
+}
+@media (min-width: 325px) and (max-width: 768px) {
+
+}
+@media (min-width: 768px) and (max-width: 992px) {
+  .memo-container {
+    width: 33.3%;
+  }
+}
+@media (min-width: 992px){
+  .memo-container {
+    width: 25%;
+  }
 }

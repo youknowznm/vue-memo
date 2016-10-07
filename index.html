@@ -3,11 +3,12 @@
   <head>
     <meta charset="utf-8">
     <title>vue-memo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href='src/style/main.css'>
   </head>
   <body>
-    <div class="fullscreen-layer"></div>
+    <div class="cover-layer"></div>
 
     <div id="app">
       <div id="vue-memo">
@@ -19,7 +20,7 @@
             </div>
             <ul class="nav navbar-nav">
               <li class="add dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="li">新建</a>
+                <a href="#" class="create-new dropdown-toggle" data-toggle="dropdown" role="li">新建</a>
                 <ul class="dropdown-menu">
                   <li class="add-text">
                     <a href="#">
@@ -39,27 +40,29 @@
             </form>
             <ul class="nav navbar-nav navbar-right">
               <li class="categories dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="li">分类<span class="memo-count badge">14</span> </a>
+                <a href="#" class="current-category dropdown-toggle" data-toggle="dropdown" role="li">
+                  分类<span class="count badge">14</span>
+                </a>
                 <ul class="dropdown-menu">
                   <li class="total">
                     <a href="#">
-                      全部<span class="memo-count badge">14</span>
+                      全部<span class="count badge">14</span>
                     </a>
                   </li>
                   <li role="separator" class="divider"></li>
                   <li class="category">
                     <a href="#">
-                      工作<span class="memo-count badge">14</span>
+                      工作<span class="count badge">14</span>
                     </a>
                   </li>
                   <li class="category">
                     <a href="#">
-                      生活<span class="memo-count badge">14</span>
+                      生活<span class="count badge">14</span>
                     </a>
                   </li>
                   <li class="category">
                     <a href="#">
-                      学习<span class="memo-count badge">14</span>
+                      学习<span class="count badge">14</span>
                     </a>
                   </li>
                   <li role="separator" class="divider"></li>
@@ -75,7 +78,7 @@
           <div class="memo-container">
             <div class="memo">
               <div class="mark"></div>
-              <ul class="controllers">
+              <ul class="tools">
                 <li class="edit"></li>
                 <li class="delete"></li>
               </ul>
@@ -89,26 +92,43 @@
 
 
 
-
         </div>
       </div>
 
-      <!-- <div id="edit-text" class="popup">
-        <ul class="controllers">
-          <li class="save"></li>
-          <li class="cancel"></li>
-        </ul>
-        <input id="edit-title" type="text" class="edit-title form-control" placeholder="标题（20字以内）">
-        <textarea id="edit-text-content" class="form-control" resize="false" placeholder="内容"></textarea>
+      <!-- <div id="editor-text" class="editor-layer">
+        <div class="editor-top">
+          <input id="editor-title" type="text" class="editor-title form-control" placeholder="标题">
+          <ul class="tools">
+            <li class="save"></li>
+            <li class="cancel"></li>
+          </ul>
+        </div>
+        <textarea id="editor-text-content" class="form-control" placeholder="内容"></textarea>
       </div> -->
 
-      <div id="edit-doodle" class="popup">
-        <ul class="controllers">
-          <li class="save"></li>
-          <li class="cancel"></li>
-        </ul>
-        <input id="edit-title" type="text" class="form-control" placeholder="标题"></input>
-        <canvas id="edit-doodle-content"></canvas>
+      <div id="editor-doodle" class="editor-layer">
+        <div class="editor-top">
+          <input id="editor-title" type="text" class="form-control" placeholder="标题"></input>
+          <ul class="tools">
+            <li class="save"></li>
+            <li class="cancel"></li>
+          </ul>
+        </div>
+        <div id="canvas-wrapper">
+          <ul class="colors">
+            <li data-color="black"></li>
+            <li data-color="green"></li>
+            <li data-color="yellow"></li>
+            <li data-color="red"></li>
+            <li data-color="white"></li>
+          </ul>
+          <ul class="controllers">
+            <li class="undo"></li>
+            <li class="redo"></li>
+            <li class="clear"></li>
+          </ul>
+          <canvas id="editor-doodle-content" width='298' height=298></canvas>
+        </div>
       </div>
 
     </div>
