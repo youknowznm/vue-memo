@@ -7,26 +7,20 @@
 //
 
 $(window).on('resize load', () => {
-  //
+  const memoWidth = $('.memo').eq(0).width();
+  $('.memo').height(memoWidth + 50);
   let editLayerHeight = $('.editor-layer').width() + 50;
   $('#editor-text')
     .height(editLayerHeight)
     .css('marginTop', -(editLayerHeight / 2))
     .css('marginLeft', -(editLayerHeight / 2));
-  //
   $('#editor-text-content').height(editLayerHeight - 64);
-
-});
-
-$('body').on('mousemove', (e) => {
-  $('.memos')
-    .css('background-position-x', Math.ceil(e.pageX / 30))
-    .css('background-position-y', Math.ceil(e.pageY / 30));
 });
 
 
 const setCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
-  // 颜色表对象
+
+  // 颜色值对象
   const colorTable = [
     {
       name: 'black',
@@ -54,42 +48,46 @@ const setCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
       opagueCode: '#fff',
     },
   ];
-  // get context
+
+  // 初始化 context
   let ctx = canvasEle.getContext('2d');
   let selectedColor = null;
   let hasOnGoingStroke = false;
-  let statusStack = [];
+  let prevStatusStack = [];
+  let futureStatusStack = [];
   let $canvas = $(canvasEle);
+
   // 方法：将 imageData 写入一个 Image 对象，画在 canvas 上
   const loadImageData = (data) => {
     let img = new Image();
     img.src = data;
-    clearCanvas();
     img.onload = () => {
+      clearCanvas();
       ctx.drawImage(img, 0, 0);
     };
   }
   // 方法：存储当前的 canvas 内容为 imageData，推入状态栈
   const saveImageData = () => {
     let currentStatus = canvasEle.toDataURL(0, 0, 300, 300);
-    statusStack.push(currentStatus);
+    prevStatusStack.unshift(currentStatus);
   };
   // 方法：清除画布
   const clearCanvas = () => {
     ctx.clearRect(0, 0, 300, 300);
   };
-  // 提供了 imageData 参数，就画出来，
+  // 若提供了 imageData 参数就画出来
   if (imageData !== null) {
     loadImageData(imageData);
   }
-  // 无论此时是否已有内容，推入状态栈一次
+  // 然后无论此时是否已有内容，推入状态栈一次
   saveImageData();
+
   // 颜色选择器鼠标事件
   $(colorsEle)
     .on('click', (evt) => {
       $target = $(evt.target);
       const tarColorName = $target.data('color');
-      selectedColor = colorTable.find( (item) => {
+      selectedColor = colorTable.find((item) => {
         return item.name === tarColorName;
       });
       $target
@@ -101,7 +99,19 @@ const setCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
     .children('[data-color=black]')
     .click();
   // canvas 鼠标事件
-  $canvas.on('mousedown', (evt) => {
+  $canvas.on('mousedown touchstart', (evt) => {
+      let stX, stY;
+      console.log(evt);
+      switch (evt.type) {
+        case 'touchstart':
+          stX = evt.targetTouches[0].clientX;
+          stY = evt.targetTouches[0].clientY;
+          break;
+        default:
+          stX = evt.offsetX;
+          stY = evt.offsetY;
+          break;
+      }
       hasOnGoingStroke = true;
       ctx.strokeStyle = selectedColor.opagueCode;
       ctx.lineWidth = 5;
@@ -109,18 +119,40 @@ const setCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
       ctx.lineJoin = 'round';
       ctx.imageSmoothingEnabled = true;
       ctx.beginPath();
-      ctx.moveTo(evt.offsetX, evt.offsetY);
+      ctx.moveTo(stX, stY);
     })
-    .on('mousemove', (evt) => {
+    .on('mousemove touchmove', (evt) => {
       if (hasOnGoingStroke === true) {
-        ctx.lineTo(evt.offsetX, evt.offsetY);
+        let mdX, mdY;
+        switch (evt.type) {
+          case 'touchmove':
+            mdX = evt.changedTouches[0].clientX;
+            mdY = evt.changedTouches[0].clientY;
+            break;
+          default:
+            mdX = evt.offsetX;
+            mdY = evt.offsetY;
+            break;
+        }
+        ctx.lineTo(mdX, mdY);
         ctx.stroke();
       }
     })
-    .on('mouseout mouseup', (evt) => {
+    .on('mouseout mouseup touchend', (evt) => {
       if (hasOnGoingStroke === true) {
+        let edX, edY;
+        switch (evt.type) {
+          case 'touchend':
+            edX = evt.changedTouches[0].clientX;
+            edY = evt.changedTouches[0].clientY;
+            break;
+          default:
+            edX = evt.offsetX;
+            edY = evt.offsetY;
+            break;
+        }
         ctx.strokeStyle = selectedColor.regularCode;
-        ctx.lineTo(evt.offsetX, evt.offsetY);
+        ctx.lineTo(edX, edY);
         ctx.stroke();
         hasOnGoingStroke = false;
         saveImageData();
@@ -131,15 +163,19 @@ const setCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
   $(controllersEle)
     .children('.undo')
     .on('click', (evt) => {
-      if (!$(evt.target).hasClass('disabled')) {
-        loadImageData(statusStack[statusStack.length - 2]);
+      if (prevStatusStack.length !== 0) {
+        loadImageData(prevStatusStack[0]);
+        let currentStep = prevStatusStack.splice(0, 1);
+        futureStatusStack.unshift(currentStep);
       }
     })
     .end()
     .children('.redo')
     .on('click', (evt) => {
-      if (!$(evt.target).hasClass('disabled')) {
-        saveImageData();
+      if (futureStatusStack.length !== 0) {
+        loadImageData(futureStatusStack[0]);
+        let currentStep = futureStatusStack.splice(0, 1);
+        prevStatusStack.unshift(currentStep);
       }
     })
     .end()
@@ -147,8 +183,6 @@ const setCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
     .on('click', () => {
       clearCanvas();
     });
-
-
 }
 
 setCanvas(
