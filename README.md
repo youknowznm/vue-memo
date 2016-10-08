@@ -1,4 +1,4 @@
-# vue-memo
+# z-memo
 
 > A Vue.js project
 

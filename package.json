@@ -1,5 +1,5 @@
 {
-  "name": "z-memo",
+  "name": "vue-memo",
   "description": "A Vue.js project",
   "author": "youknowznm <znm_92@163.com>",
   "scripts": {
@@ -21,6 +21,7 @@
     "envify": "^3.4.1",
     "http-server": "^0.9.0",
     "npm-run-all": "^2.1.2",
+    "stylus": "^0.54.5",
     "uglify-js": "^2.5.0",
     "vueify": "^9.1.0",
     "watchify": "^3.4.0"

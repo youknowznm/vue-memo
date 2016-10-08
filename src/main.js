@@ -1,10 +1,11 @@
-// import Vue from 'vue'
-// import App from './App.vue'
-//
-// new Vue({
-//   el: '#app',
-//   render: h => h(App)
-//
+import Vue from 'vue'
+import App from './App.vue'
+
+new Vue({
+  el: '#vue-memo',
+  render: h => h(App)
+});
+
 
 $(window).on('resize load', () => {
   const memoWidth = $('.memo').eq(0).width();
@@ -185,8 +186,8 @@ const setCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
     });
 }
 
-setCanvas(
-  document.getElementById('editor-doodle-content'),
-  $('#editor-doodle .colors'),
-  $('#editor-doodle .controllers'),
-  null);
+// setCanvas(
+//   document.getElementById('editor-doodle-content'),
+//   $('#editor-doodle .colors'),
+//   $('#editor-doodle .controllers'),
+//   null);
