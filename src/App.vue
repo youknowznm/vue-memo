@@ -48,7 +48,7 @@
         <ul class="nav navbar-nav navbar-right">
           <li class="categories dropdown">
             <a href="#" class="current-category dropdown-toggle" data-toggle="dropdown" role="li">
-              分类<span class="count badge">14</span>
+              全部<span class="count badge">14</span>
             </a>
             <ul class="dropdown-menu">
               <li class="total">
@@ -72,8 +72,6 @@
                   学习<span class="count badge">14</span>
                 </a>
               </li>
-              <li role="separator" class="divider"></li>
-              <li class="category"><a href="#">新增分类</a></li>
             </ul>
           </li>
         </ul>
@@ -138,6 +136,10 @@
 </template>
 
 <script>
+import storage from './storage';
+console.log(storage);
+
+
 export default {
   data () {
     return {
@@ -173,6 +175,7 @@ $white = #fff
   border 0
   list-style none
   text-decoration none
+  font-family "Microsoft Yahei", "Serif"
 
 
 /*****  main  *****/
@@ -193,7 +196,7 @@ $white = #fff
   .dropdown-toggle
     position relative
     padding-right 45px !important
-    transition .2s
+    transition .2s ease-in-out
 
     &:hover
       background rgb(231, 231, 231) !important
@@ -202,7 +205,7 @@ $white = #fff
       content ' '
       width 24px
       height 24px
-      background url("/src/images/icon-dropdown.png") 0 0 no-repeat
+      background url("/src/images/icons/icon-dropdown.png") 0 0 no-repeat
       position absolute
       right 18px
       top 13px
@@ -250,9 +253,9 @@ $white = #fff
     top -8px
     left -8px
     border-radius 50%
-    background $tint-blue url("/src/images/done.svg") no-repeat 3px 3px
+    background $tint-blue url("/src/images/icons/icon-done.svg") no-repeat 3px 3px
     background-size 18px 18px
-    transition all .2s
+    transition all .2s ease-in-out
     cursor pointer
 
     &:hover
@@ -279,23 +282,23 @@ $white = #fff
         float left
         margin-left 10px
         opacity .5
-        transition opacity .2s
+        transition opacity .2s ease-in-out
 
         &:hover
           cursor pointer
           opacity 1
 
         &.edit
-          background url("/src/images/icon-edit.png") no-repeat 0 0
+          background url("/src/images/icons/icon-edit.png") no-repeat 0 0
 
         &.delete
-          background url("/src/images/icon-delete.png") no-repeat 0 0
+          background url("/src/images/icons/icon-delete.png") no-repeat 0 0
 
         &.save
-          background url("/src/images/icon-save.png") no-repeat 0 0
+          background url("/src/images/icons/icon-save.png") no-repeat 0 0
 
         &.cancel
-          background url("/src/images/icon-cancel.png") no-repeat 0 0
+          background url("/src/images/icons/icon-cancel.png") no-repeat 0 0
 
   .title
     display inline-block
@@ -389,22 +392,22 @@ $white = #fff
       width 24px
       height 24px
       opacity .5
-      transition opacity .2s
+      transition opacity .2s ease-in-out
 
       &:hover
         cursor pointer
         opacity 1
 
       &.undo
-        background url("/src/images/icon-undo.png") no-repeat 2px 2px
+        background url("/src/images/icons/icon-undo.png") no-repeat 2px 2px
         background-size 83.3%
 
       &.redo
-        background url("/src/images/icon-redo.png") no-repeat 2px 2px
+        background url("/src/images/icons/icon-redo.png") no-repeat 2px 2px
         background-size 83.3%
 
       &.clear
-        background url("/src/images/icon-clear.png") no-repeat 2px 2px
+        background url("/src/images/icons/icon-clear.png") no-repeat 2px 2px
         background-size 83.3%
 
   .colors
@@ -420,7 +423,7 @@ $white = #fff
       margin-left 6px
       border 2px solid $bootstrap-black
       border-radius 50%
-      transition .2s
+      transition .2s ease-in-out
 
       &:hover,
       &.current
