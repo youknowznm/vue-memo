@@ -1,96 +1,112 @@
 <template>
   <div id="vue-memo">
 
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
         <div class="navbar-header">
           <a class="navbar-brand">vue-memo</a>
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
         </div>
-        <ul class="nav navbar-nav">
-          <li class="add dropdown">
-            <a href="#" class="create-new dropdown-toggle" data-toggle="dropdown" role="li">新建</a>
-            <ul class="dropdown-menu">
-              <li class="add-text">
-                <a href="#">
-                  文本
-                </a>
-              </li>
-              <li class="add-doodle">
-                <a href="#">
-                  涂鸦
-                </a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-        <form class="navbar-form navbar-right">
-          <input type="text" class="search-box form-control" placeholder="过滤关键字">
-        </form>
-        <ul class="nav navbar-nav navbar-right">
-          <li class="sort-by dropdown">
-            <a href="#" class="current-category dropdown-toggle" data-toggle="dropdown" role="li">
-              按标题排序
-            </a>
-            <ul class="dropdown-menu">
-              <li class="by-timestamp">
-                <a href="#">
-                  按标题排序
-                </a>
-              </li>
-              <li class="by-name">
-                <a href="#">
-                  按创建时间排序
-                </a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li class="categories dropdown">
-            <a href="#" class="current-category dropdown-toggle" data-toggle="dropdown" role="li">
-              全部<span class="count badge">14</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="total">
-                <a href="#">
-                  全部<span class="count badge">14</span>
-                </a>
-              </li>
-              <li role="separator" class="divider"></li>
-              <li class="category">
-                <a href="#">
-                  工作<span class="count badge">14</span>
-                </a>
-              </li>
-              <li class="category">
-                <a href="#">
-                  生活<span class="count badge">14</span>
-                </a>
-              </li>
-              <li class="category">
-                <a href="#">
-                  学习<span class="count badge">14</span>
-                </a>
-              </li>
-            </ul>
-          </li>
-        </ul>
+        <div class="collapse navbar-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li class="add dropdown">
+              <a href="#" class="create-new dropdown-toggle" data-toggle="dropdown" role="li">新建</a>
+              <ul class="dropdown-menu">
+                <li class="add-text">
+                  <a href="#">
+                    文本
+                  </a>
+                </li>
+                <li class="add-doodle">
+                  <a href="#">
+                    涂鸦
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="categories dropdown">
+              <a href="#" class="current-category dropdown-toggle" data-toggle="dropdown" role="li">
+                全部<span class="count badge">14</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="total">
+                  <a href="#">
+                    全部<span class="count badge">14</span>
+                  </a>
+                </li>
+                <li role="separator" class="divider"></li>
+                <li class="category">
+                  <a href="#">
+                    工作<span class="count badge">14</span>
+                  </a>
+                </li>
+                <li class="category">
+                  <a href="#">
+                    生活<span class="count badge">14</span>
+                  </a>
+                </li>
+                <li class="category">
+                  <a href="#">
+                    学习<span class="count badge">14</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="sort-by dropdown">
+              <a href="#" class="current-category dropdown-toggle" data-toggle="dropdown" role="li">
+                按标题排序
+              </a>
+              <ul class="dropdown-menu">
+                <li class="by-timestamp">
+                  <a href="#">
+                    按标题排序
+                  </a>
+                </li>
+                <li class="by-name">
+                  <a href="#">
+                    按创建时间排序
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <form class="navbar-form">
+                <input type="text" class="search-box form-control" placeholder="过滤关键字">
+              </form>
+            </li>
+
+          </ul>
+        </div>
       </div>
     </nav>
 
-    <div id="memos">
-      <div class="memo-container">
-        <div class="memo">
+    <div id="memos" class="container">
+      <div id="memos-wrapper">
+        <div v-for="memo in memos" class="memo">
           <button class="mark"></button>
-          <div class="memo-top">
+          <div class="memo-heading">
+            <h5 class="title">{{ memo.title }}</h5>
             <ul class="tools">
               <li class="edit"></li>
               <li class="delete"></li>
             </ul>
-            <h5 class="title">标题标题标题标题标题标题标题标题标题标题标题</h5>
           </div>
+          <h6 class="memo-info">
+            <span class="timeStamp">{{ memo.timeStamp | toReadableDate }}</span>
+            <span class="category">分类: {{ categories[memo.categoryId] }}</span>
+          </h6>
           <div class="content text">
-            <p>Screen readers will have trouble with your forms if you don't include a label for every input. For these inline forms, you can hide the labels using the .sr-only class. There are further alternative methods of providing a label for assistive technologies, such as the aria-label, aria-labelledby or title attribute. If none of these is present, screen readers may resort to using the placeholder attribute, if present, but note that use of placeholder as a replacement fo</p>
+            <div v-if="memo.type === 0">
+              {{memo.content|marked}}
+            </div>
+            <!-- <img v-cloak v-else :src="memo.content" /> -->
+            <!-- <doodle-preview v-else></doodle-preview> -->
           </div>
         </div>
       </div>
@@ -136,15 +152,27 @@
 </template>
 
 <script>
-import storage from './storage';
-console.log(storage);
-
-
+import store from './storage';
+import filters from './filters';
+import doodlePreview from './components/doodle-preview.vue'
+console.log(store);
 export default {
   data () {
     return {
-      msg: 'Hello Vue!'
-    }
+      memos: store.memos,
+      categories: {
+        0: '工作',
+        1: '生活',
+        2: '学习',
+      },
+    };
+  },
+  components: {
+    doodlePreview,
+  },
+  filters: {
+    toReadableDate: filters.toReadableDate,
+    marked: marked,
   }
 }
 </script>
@@ -169,14 +197,20 @@ $white = #fff
 
 /*****  global  *****/
 
+[v-cloak] {
+  display: none;
+}
+
 *
   padding 0
   margin 0
   border 0
   list-style none
   text-decoration none
-  font-family "Microsoft Yahei", "Serif"
+  /*font-family "Microsoft Yahei", "Serif"*/
 
+body
+  padding-top 50px
 
 /*****  main  *****/
 
@@ -193,6 +227,15 @@ $white = #fff
   border-radius 0
   margin-bottom 0
 
+  .navbar-right
+    padding-right 0
+
+    .navbar-form
+      padding-right 0
+
+    .sort-by
+      min-width 135px
+
   .dropdown-toggle
     position relative
     padding-right 45px !important
@@ -208,7 +251,6 @@ $white = #fff
       background url("/src/images/icons/icon-dropdown.png") 0 0 no-repeat
       position absolute
       right 18px
-      top 13px
       opacity .6
 
   .count
@@ -232,17 +274,18 @@ $white = #fff
   padding 0 6px
   background url("/src/images/pixels.png")
 
-.memo-container
-  width 100%
-  float left
-  padding 6px
+#memos-wrapper
+  margin 0 auto
 
 .memo
+  display inline-block
   position relative
-  margin-top 20px
   border 1px solid $grey
   border-radius 5px
-  padding 6px 12px
+  margin-top 20px
+  margin-left 5px
+  margin-right 5px
+  padding 9px
   background-color $white
 
   .mark
@@ -267,14 +310,13 @@ $white = #fff
     .mark
       display block
 
-  .memo-top
+  .memo-heading
     position relative
     width 100%
 
     .tools
-      position absolute
-      top 8px
-      right 0
+      float right
+      margin-top 6px
 
       > li
         width 20px
@@ -300,25 +342,32 @@ $white = #fff
         &.cancel
           background url("/src/images/icons/icon-cancel.png") no-repeat 0 0
 
-  .title
-    display inline-block
-    text-indent 6px
-    margin-top 8px
-    padding-bottom 12px
-    border-bottom 1px solid $grey
-    text-overflow ellipsis
-    white-space nowrap
-    overflow hidden
-    max-width calc(100% - 60px)
+    .title
+      display inline-block
+      margin-bottom 6px
+      padding-bottom 6px
+      border-bottom 1px solid $grey
+      text-overflow ellipsis
+      white-space nowrap
+      overflow hidden
+      max-width calc(100% - 60px)
+
+  .memo-info
+    margin 0 auto 12px
+    color $dark-grey
+    font-weight 300
+
+    .category
+      float right
 
   .content
-    width 100%
-    height calc(100% - 50px)
+    width 250px
+    height 250px
     background-color $bootstrap-grey
     bottom 12px
 
   .text
-    padding 12px
+    padding 6px
     overflow-y scroll
     text-overflow ellipsis
 
@@ -447,7 +496,7 @@ $white = #fff
 
 /*****  reset  *****/
 
-@media (max-width 325px)
+@media (max-width 370px)
   #editor-doodle
     padding 5px
     width 310px
@@ -457,21 +506,25 @@ $white = #fff
   #editor-doodle #canvas-wrapper
     bottom 5px
 
-  .memo-container
-    width 100%
 
-
-@media (min-width 325px) and (max-width 768px)
-  .memo-container
-    width 50%
+@media (min-width 370px) and (max-width 768px)
+  #memos-wrapper
+    width 280px
 
 
 @media (min-width 768px) and (max-width 992px)
-  .memo-container
-    width 33.3%
+  #memos-wrapper
+    width 560px
 
 
-@media (min-width 992px)
-  .memo-container
-    width 25%
+@media (min-width 992px) and (max-width 1200px)
+  #memos-wrapper
+    width 840px
+
+
+@media (min-width 1200px)
+  #memos-wrapper
+    width 1120px
+
+
 </style>

@@ -1,12 +1,12 @@
 // 取得300*300图片的 imageData
 const getImageData = (imageUrl) => {
-  const image = new Image();
+  let image = new Image();
   image.src = imageUrl;
-  const canvas = document.createElement('canvas');
+  let canvas = document.createElement('canvas');
   canvas.setAttribute('width', 300);
   canvas.setAttribute('height', 300);
   canvas.getContext('2d').drawImage(image, 0, 0, 300, 300);
-  return canvas.toDataURL(0, 0, 300, 300);
+  return canvas.toDataURL();
 }
 
 /*
@@ -46,7 +46,6 @@ class VueMemoStorage {
   remove (memo) {
     this.memos.splice(this.memos.indexOf(memo), 1);
   }
-
   init () {
     this.add(new Memo({
       categoryId: 0,
@@ -83,7 +82,7 @@ class VueMemoStorage {
     this.add(new Memo({
       categoryId: 2,
       title: '凛冬的寒风快点出版啊',
-      type: 0,
+      type: 1,
       content: getImageData('/src/images/the-winds-of-winter.png'),
     }));
     this.add(new Memo({
@@ -95,7 +94,8 @@ class VueMemoStorage {
   }
 }
 
-let store = localStorage.store = new VueMemoStorage();
-store.init();
+  let store = localStorage.store = new VueMemoStorage();
+  store.init();
+  console.log(typeof localStorage.store);
 
 export default store;

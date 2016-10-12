@@ -7,16 +7,16 @@ new Vue({
 });
 
 
-$(window).on('resize load', () => {
-  const memoWidth = $('.memo').eq(0).width();
-  $('.memo').height(memoWidth + 50);
-  let editLayerHeight = $('.editor-layer').width() + 50;
-  $('#editor-text')
-    .height(editLayerHeight)
-    .css('marginTop', -(editLayerHeight / 2))
-    .css('marginLeft', -(editLayerHeight / 2));
-  $('#editor-text-content').height(editLayerHeight - 64);
-});
+// $(window).on('resize load', () => {
+//   const memoWidth = $('.memo').eq(0).width();
+//   $('.memo').height(memoWidth + 73);
+//   let editLayerHeight = $('.editor-layer').width() + 50;
+//   $('#editor-text')
+//     .height(editLayerHeight)
+//     .css('marginTop', -(editLayerHeight / 2))
+//     .css('marginLeft', -(editLayerHeight / 2));
+//   $('#editor-text-content').height(editLayerHeight - 64);
+// });
 
 
 const setCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
