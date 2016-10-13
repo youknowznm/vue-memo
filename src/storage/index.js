@@ -1,13 +1,4 @@
-// 取得300*300图片的 imageData
-const getImageData = (imageUrl) => {
-  let image = new Image();
-  image.src = imageUrl;
-  let canvas = document.createElement('canvas');
-  canvas.setAttribute('width', 300);
-  canvas.setAttribute('height', 300);
-  canvas.getContext('2d').drawImage(image, 0, 0, 300, 300);
-  return canvas.toDataURL();
-}
+
 
 /*
 只提供生活、工作、学习3个类别
@@ -34,6 +25,18 @@ class Memo {
       this[attributeName] = updatedMemo[attributeName];
     }
   }
+  // 取得260*260图片的 imageData
+  getImageData (imageUrl) {
+    let canvas = document.createElement('canvas');
+    canvas.setAttribute('width', 260);
+    canvas.setAttribute('height', 260);
+    let image = new Image();
+    image.src = imageUrl;
+    image.onload = () => {
+      canvas.getContext('2d').drawImage(image, 0, 0);
+      this.content = canvas.toDataURL();
+    };
+  }
 }
 
 class VueMemoStorage {
@@ -53,20 +56,18 @@ class VueMemoStorage {
       type: 0,
       content: '给vue-memo的一些按钮添加持续0.2秒、ease-in-out的transition，mouseover时触发。',
     }));
-    this.add(new Memo({
+    let memoVL = new Memo({
       categoryId: 2,
       title: 'vue的logo咋越看越漂亮呢',
       type: 1,
-      content: getImageData('/src/images/vue-logo.png'),
-    }));
+    });
+    memoVL.getImageData('/src/images/vue-logo.png');
+    this.add(memoVL);
     this.add(new Memo({
       categoryId: 1,
       title: '买点东西',
       type: 0,
-      content: `
-      蓝月亮袋装洗衣液/n
-      乐事薯片飘香麻辣锅味/n
-      Marlboro Double Burst`,
+      content: '蓝月亮袋装洗衣液/r 乐事薯片飘香麻辣锅味/r Marlboro Double Burst',
     }));
     this.add(new Memo({
       categoryId: 1,
@@ -79,12 +80,13 @@ class VueMemoStorage {
       What they are, yet I know not/n
       But they will be the terrors of the earth'`,
     }));
-    this.add(new Memo({
+    let memoWOW = new Memo({
       categoryId: 2,
       title: '凛冬的寒风快点出版啊',
       type: 1,
-      content: getImageData('/src/images/the-winds-of-winter.png'),
-    }));
+    });
+    memoWOW.getImageData('/src/images/the-winds-of-winter.png');
+    this.add(memoWOW);
     this.add(new Memo({
       categoryId: 1,
       title: '意义',
@@ -95,7 +97,10 @@ class VueMemoStorage {
 }
 
   let store = localStorage.store = new VueMemoStorage();
+
   store.init();
-  console.log(typeof localStorage.store);
+
+  let a = (JSON.stringify(store));
+  console.log(JSON.parse(a));
 
 export default store;

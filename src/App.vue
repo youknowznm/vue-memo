@@ -103,10 +103,9 @@
           </h6>
           <div class="content text">
             <div v-if="memo.type === 0">
-              {{memo.content|marked}}
+              {{{ memo.markedContent }}}
             </div>
-            <!-- <img v-cloak v-else :src="memo.content" /> -->
-            <!-- <doodle-preview v-else></doodle-preview> -->
+            <img v-else :src="memo.content" />
           </div>
         </div>
       </div>
@@ -173,6 +172,11 @@ export default {
   filters: {
     toReadableDate: filters.toReadableDate,
     marked: marked,
+  },
+  computed: {
+    markedContent (memo) {
+      return marke(memo);
+    }
   }
 }
 </script>
@@ -344,6 +348,7 @@ body
 
     .title
       display inline-block
+      margin-top 6px
       margin-bottom 6px
       padding-bottom 6px
       border-bottom 1px solid $grey
@@ -361,8 +366,8 @@ body
       float right
 
   .content
-    width 250px
-    height 250px
+    width 260px
+    height 260px
     background-color $bootstrap-grey
     bottom 12px
 
@@ -509,22 +514,22 @@ body
 
 @media (min-width 370px) and (max-width 768px)
   #memos-wrapper
-    width 280px
+    width 290px
 
 
 @media (min-width 768px) and (max-width 992px)
   #memos-wrapper
-    width 560px
+    width 580px
 
 
 @media (min-width 992px) and (max-width 1200px)
   #memos-wrapper
-    width 840px
+    width 870px
 
 
 @media (min-width 1200px)
   #memos-wrapper
-    width 1120px
+    width 1160px
 
 
 </style>
