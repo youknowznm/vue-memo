@@ -88,26 +88,16 @@
 
     <div id="memos" class="container">
       <div id="memos-wrapper">
-        <div v-for="memo in memos" class="memo">
-          <button class="mark"></button>
-          <div class="memo-heading">
-            <h5 class="title">{{ memo.title }}</h5>
-            <ul class="tools">
-              <li class="edit"></li>
-              <li class="delete"></li>
-            </ul>
-          </div>
-          <h6 class="memo-info">
-            <span class="timeStamp">{{ memo.timeStamp | toReadableDate }}</span>
-            <span class="category">分类: {{ categories[memo.categoryId] }}</span>
-          </h6>
-          <div class="content text">
-            <div v-if="memo.type === 0">
-              {{{ memo.markedContent }}}
-            </div>
-            <img v-else :src="memo.content" />
-          </div>
-        </div>
+
+          <memo-item v-for="memo in memos"
+            :categoryId="memo.categoryId"
+            :type="memo.type"
+            :title="memo.title"
+            :content="memo.content"
+            :timeStamp="memo.timeStamp"
+            :isCompleted="memo.isCompleted">
+          </memo-item>
+
       </div>
     </div>
 
@@ -153,8 +143,10 @@
 <script>
 import store from './storage';
 import filters from './filters';
-import doodlePreview from './components/doodle-preview.vue'
+import memoItem from './components/memoItem.vue'
+
 console.log(store);
+
 export default {
   data () {
     return {
@@ -167,16 +159,11 @@ export default {
     };
   },
   components: {
-    doodlePreview,
+    memoItem,
   },
   filters: {
     toReadableDate: filters.toReadableDate,
     marked: marked,
-  },
-  computed: {
-    markedContent (memo) {
-      return marke(memo);
-    }
   }
 }
 </script>
@@ -370,11 +357,14 @@ body
     height 260px
     background-color $bootstrap-grey
     bottom 12px
-
-  .text
     padding 6px
     overflow-y scroll
     text-overflow ellipsis
+
+    &[data-type=doodle]
+      /*overflow auto*/
+      padding 0
+
 
 
 /*****  layers  *****/
