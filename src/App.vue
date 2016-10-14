@@ -362,9 +362,7 @@ body
     text-overflow ellipsis
 
     &[data-type=doodle]
-      /*overflow auto*/
       padding 0
-
 
 
 /*****  layers  *****/

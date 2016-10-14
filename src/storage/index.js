@@ -54,7 +54,7 @@ class VueMemoStorage {
       categoryId: 0,
       title: 'vue-memo样式更新',
       type: 0,
-      content: '给vue-memo的一些按钮添加持续0.2秒、ease-in-out的transition，mouseover时触发。',
+      content: `给vue-memo的一些按钮添加持续0.2秒、ease-in-out的transition，mouseover时触发`,
     }));
     let memoVL = new Memo({
       categoryId: 2,
@@ -67,17 +67,16 @@ class VueMemoStorage {
       categoryId: 1,
       title: '买点东西',
       type: 0,
-      content: '蓝月亮袋装洗衣液/r 乐事薯片飘香麻辣锅味/r Marlboro Double Burst',
+      content: `蓝月亮袋装洗衣液 乐事薯片飘香麻辣锅味 Marlboro Double Burst`,
     }));
     this.add(new Memo({
       categoryId: 1,
       title: 'Westworld Quote',
       type: 0,
-      content: `
-      'By most mechanical and dirty hand/n
-      I shall have such revenges on you both/n
-      The things I will do/n
-      What they are, yet I know not/n
+      content: `'By most mechanical and dirty hand
+      I shall have such revenges on you both
+      The things I will do
+      What they are, yet I know not
       But they will be the terrors of the earth'`,
     }));
     let memoWOW = new Memo({
@@ -96,11 +95,15 @@ class VueMemoStorage {
   }
 }
 
-  let store = localStorage.store = new VueMemoStorage();
-
+let store;
+if (localStorage.vueMemoStore !== undefined) {
+  store = localStorage.vueMemoStore;
+} else {
+  store = new VueMemoStorage();
   store.init();
+}
 
-  let a = (JSON.stringify(store));
-  console.log(JSON.parse(a));
+let a = (JSON.stringify(store));
+console.log(JSON.parse(a));
 
 export default store;

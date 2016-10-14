@@ -13,10 +13,8 @@
     <span class="category">分类: {{ categories[categoryId] }}</span>
   </h6>
   <div class="content" :data-type="type === 0 ? 'text' : 'doodle'">
-    <div v-if="type === 0" class="text">
-      <!-- {{ content | marked }} -->
-    </div>
-    <img v-else :src="content" />
+    <div v-if="type === 0" v-html="marked(content)"  class="text"></div>
+    <img v-else :src="content" class="doodle" />
   </div>
 </div>
 </template>
@@ -37,14 +35,16 @@ export default {
       },
     };
   },
-  created() {
+  ready () {
     console.log('caonima');
-    console.log(this);
-    this.$el.getElementByClassName('text')[0].innerHTML = marked(content);
   },
   filters: {
     toReadableDate: filters.toReadableDate,
-    marked: marked,
+    marked,
+  },
+  methods: {
+    marked,
+
   }
 }
 </script>
