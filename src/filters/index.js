@@ -1,4 +1,5 @@
-const toReadableDate = (dateObj) => {
+const toReadableDate = (timeStampParsed) => {
+  let dateObj = new Date(timeStampParsed);
   const toTwoDigits = (str) => {
     if (str.valueOf() < 10) {
       return '0' + str;
@@ -6,10 +7,10 @@ const toReadableDate = (dateObj) => {
     return str;
   }
   return `${toTwoDigits(dateObj.getMonth() + 1)}-${toTwoDigits(dateObj.getDay())}, ${toTwoDigits(dateObj.getHours())}:${toTwoDigits(dateObj.getMinutes())}`;
-}
+};
 
 let filters = {
   toReadableDate,
-}
+};
 
-export default filters
+export default filters;

@@ -63,7 +63,7 @@
                 按标题排序
               </a>
               <ul class="dropdown-menu">
-                <li class="by-timestamp">
+                <li class="by-timeStampParsed">
                   <a href="#">
                     按标题排序
                   </a>
@@ -94,7 +94,7 @@
             :type="memo.type"
             :title="memo.title"
             :content="memo.content"
-            :timeStamp="memo.timeStamp"
+            :timeStampParsed="memo.timeStampParsed"
             :isCompleted="memo.isCompleted">
           </memo-item>
 
@@ -142,29 +142,19 @@
 
 <script>
 import store from './storage';
-import filters from './filters';
-import memoItem from './components/memoItem.vue'
+import memoItem from './components/memoItem.vue';
 
-console.log(store);
 
 export default {
   data () {
     return {
       memos: store.memos,
-      categories: {
-        0: '工作',
-        1: '生活',
-        2: '学习',
-      },
     };
   },
   components: {
     memoItem,
   },
-  filters: {
-    toReadableDate: filters.toReadableDate,
-    marked: marked,
-  }
+
 }
 </script>
 
@@ -363,6 +353,7 @@ body
 
     &[data-type=doodle]
       padding 0
+      overflow hidden
 
 
 /*****  layers  *****/

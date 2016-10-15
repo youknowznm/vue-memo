@@ -9,7 +9,7 @@
     </ul>
   </div>
   <h6 class="memo-info">
-    <span class="timeStamp">{{ timeStamp | toReadableDate }}</span>
+    <span class="timeStampParsed">{{ timeStampParsed | toReadableDate }}</span>
     <span class="category">分类: {{ categories[categoryId] }}</span>
   </h6>
   <div class="content" :data-type="type === 0 ? 'text' : 'doodle'">
@@ -24,7 +24,7 @@ import store from '../storage';
 import filters from '../filters';
 
 export default {
-  props: ['categoryId', 'type', 'title', 'content', 'timeStamp', 'isCompleted'],
+  props: ['categoryId', 'type', 'title', 'content', 'timeStampParsed', 'isCompleted'],
   data () {
     return {
       memos: store.memos,
@@ -35,16 +35,11 @@ export default {
       },
     };
   },
-  ready () {
-    console.log('caonima');
-  },
   filters: {
     toReadableDate: filters.toReadableDate,
-    marked,
   },
   methods: {
     marked,
-
   }
 }
 </script>
