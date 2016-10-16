@@ -6,7 +6,7 @@ const toReadableDate = (timeStampParsed) => {
     }
     return str;
   }
-  return `${toTwoDigits(dateObj.getMonth() + 1)}-${toTwoDigits(dateObj.getDay())}, ${toTwoDigits(dateObj.getHours())}:${toTwoDigits(dateObj.getMinutes())}`;
+  return `${toTwoDigits(dateObj.getMonth() + 1)}-${toTwoDigits(dateObj.getDate())}, ${toTwoDigits(dateObj.getHours())}:${toTwoDigits(dateObj.getMinutes())}`;
 };
 
 let filters = {

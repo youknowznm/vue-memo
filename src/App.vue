@@ -14,15 +14,15 @@
         <div class="collapse navbar-collapse navbar-right">
           <ul class="nav navbar-nav">
             <li class="add dropdown">
-              <a href="#" class="create-new dropdown-toggle" data-toggle="dropdown" role="li">新建</a>
+              <a class="create-new dropdown-toggle" data-toggle="dropdown" role="li">新建</a>
               <ul class="dropdown-menu">
                 <li class="add-text">
-                  <a href="#">
+                  <a>
                     文本
                   </a>
                 </li>
                 <li class="add-doodle">
-                  <a href="#">
+                  <a>
                     涂鸦
                   </a>
                 </li>
@@ -30,48 +30,44 @@
             </li>
 
             <li class="categories dropdown">
-              <a href="#" class="current-category dropdown-toggle" data-toggle="dropdown" role="li">
-                全部<span class="count badge">14</span>
+              <a class="current-category dropdown-toggle" data-toggle="dropdown" role="li">
+                {{ currentCategory }}<span class="count badge">{{ filteredMemos.length }}</span>
               </a>
               <ul class="dropdown-menu">
-                <li class="total">
-                  <a href="#">
-                    全部<span class="count badge">14</span>
+                <li class="total" @click="filterByCategoryId()">
+                  <a>
+                    全部<span class="count badge">{{ memos.length }}</span>
                   </a>
                 </li>
-                <li role="separator" class="divider"></li>
-                <li class="category">
-                  <a href="#">
-                    工作<span class="count badge">14</span>
+                <li class="divider"></li>
+                <li class="category" @click="filterByCategoryId(0)">
+                  <a>
+                    工作<span class="count badge">{{ memosInWorkCate.length }}</span>
                   </a>
                 </li>
-                <li class="category">
-                  <a href="#">
-                    生活<span class="count badge">14</span>
+                <li class="category" @click="filterByCategoryId(1)">
+                  <a>
+                    生活<span class="count badge">{{ memosInLivingCate.length }}</span>
                   </a>
                 </li>
-                <li class="category">
-                  <a href="#">
-                    学习<span class="count badge">14</span>
+                <li class="category" @click="filterByCategoryId(2)">
+                  <a>
+                    学习<span class="count badge">{{ memosInStudyCate.length }}</span>
                   </a>
                 </li>
               </ul>
             </li>
 
             <li class="sort-by dropdown">
-              <a href="#" class="current-category dropdown-toggle" data-toggle="dropdown" role="li">
-                按标题排序
+              <a class="dropdown-toggle" data-toggle="dropdown">
+                {{ currentSortBy }}
               </a>
               <ul class="dropdown-menu">
-                <li class="by-timeStampParsed">
-                  <a href="#">
-                    按标题排序
-                  </a>
+                <li @click="sortByTimeOrTitle('timeStampParsed')">
+                  <a>按创建时间排序</a>
                 </li>
-                <li class="by-name">
-                  <a href="#">
-                    按创建时间排序
-                  </a>
+                <li @click="sortByTimeOrTitle('title')">
+                  <a>按标题排序</a>
                 </li>
               </ul>
             </li>
@@ -89,14 +85,14 @@
     <div id="memos" class="container">
       <div id="memos-wrapper">
 
-          <memo-item v-for="memo in memos"
-            :categoryId="memo.categoryId"
-            :type="memo.type"
-            :title="memo.title"
-            :content="memo.content"
-            :timeStampParsed="memo.timeStampParsed"
-            :isCompleted="memo.isCompleted">
-          </memo-item>
+        <memo-item v-for="memo in filteredMemos"
+          :categoryId="memo.categoryId"
+          :type="memo.type"
+          :title="memo.title"
+          :content="memo.content"
+          :timeStampParsed="memo.timeStampParsed"
+          :isCompleted="memo.isCompleted">
+        </memo-item>
 
       </div>
     </div>
@@ -149,12 +145,73 @@ export default {
   data () {
     return {
       memos: store.memos,
+      currentSortBy: '',
+      currentCategory: '全部',
+      filteredMemos: store.memos,
     };
   },
   components: {
     memoItem,
   },
+  methods: {
+    sortByTimeOrTitle (option) {
+      this.filteredMemos.sort((m1, m2) => {
+        if (m1[option] < m2[option]) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
+      this.currentSortBy =
+        option === 'timeStampParsed'
+        ? '按创建时间排序'
+        : '按标题排序';
+    },
+    filterByCategoryId (categoryId) {
+      switch (categoryId) {
+        case 0:
+          this.filteredMemos = this.memosInWorkCate;
+          this.currentCategory = '工作';
+          break;
+        case 1:
+          this.filteredMemos = this.memosInLivingCate;
+          this.currentCategory = '生活';
+          break;
+        case 2:
+          this.filteredMemos = this.memosInStudyCate;
+          this.currentCategory = '学习';
+          break;
+        case undefined:
+          this.filteredMemos = this.memos;
+          this.currentCategory = '全部';
+          break;
+      }
+      this.sortByTimeOrTitle('title');
+    },
+  },
+  filters: {
 
+  },
+  computed: {
+    memosInWorkCate () {
+      return this.memos.filter((item) => {
+        return item.categoryId === 0;
+      });
+    },
+    memosInLivingCate () {
+      return this.memos.filter((item) => {
+        return item.categoryId === 1;
+      });
+    },
+    memosInStudyCate () {
+      return this.memos.filter((item) => {
+        return item.categoryId === 2;
+      });
+    },
+  },
+  mounted () {
+    this.sortByTimeOrTitle('title');
+  },
 }
 </script>
 
@@ -192,6 +249,10 @@ $white = #fff
 
 body
   padding-top 50px
+
+blockquote
+  p
+    font-size 14px
 
 /*****  main  *****/
 
@@ -233,6 +294,10 @@ body
       position absolute
       right 18px
       opacity .6
+      top 8px
+
+      @media (min-width 768px)
+        top 15px
 
   .count
     border-radius 5px
@@ -243,15 +308,15 @@ body
     float none
     margin -2px 6px 0 9px
 
-  .add-text a,
-  .category a
+  a
+    cursor pointer !important
     line-height 24px !important
 
 
 /*****  main  *****/
 
 #memos
-  height 1000px
+  min-height 800px
   padding 0 6px
   background url("/src/images/pixels.png")
 
@@ -261,6 +326,7 @@ body
 .memo
   display inline-block
   position relative
+  width 280px
   border 1px solid $grey
   border-radius 5px
   margin-top 20px
@@ -345,7 +411,7 @@ body
   .content
     width 260px
     height 260px
-    background-color $bootstrap-grey
+    border 1px solid $bootstrap-grey
     bottom 12px
     padding 6px
     overflow-y scroll
