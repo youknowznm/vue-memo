@@ -83,21 +83,19 @@
     </nav>
 
     <div id="memos" class="container">
-      <div id="memos-wrapper">
 
-        <memo-item v-for="memo in filteredMemos"
-          :categoryId="memo.categoryId"
-          :type="memo.type"
-          :title="memo.title"
-          :content="memo.content"
-          :timeStampParsed="memo.timeStampParsed"
-          :isCompleted="memo.isCompleted">
-        </memo-item>
+      <memo-item v-for="memo in filteredMemos"
+        :categoryId="memo.categoryId"
+        :type="memo.type"
+        :title="memo.title"
+        :content="memo.content"
+        :timeStampParsed="memo.timeStampParsed"
+        :isCompleted="memo.isCompleted">
+      </memo-item>
 
-      </div>
     </div>
 
-    <!-- <div id="editor-text" class="editor-layer">
+    <div id="editor-text" class="editor-layer">
       <div class="editor-top">
         <input id="editor-title" type="text" class="editor-title form-control" placeholder="标题">
         <ul class="tools">
@@ -131,7 +129,7 @@
         </ul>
         <canvas id="editor-doodle-content" width='300' height=300></canvas>
       </div>
-    </div> -->
+    </div>
 
   </div>
 </template>
@@ -245,14 +243,15 @@ $white = #fff
   border 0
   list-style none
   text-decoration none
-  /*font-family "Microsoft Yahei", "Serif"*/
 
 body
   padding-top 50px
+  background url("/src/images/pixels.png")
 
 blockquote
   p
     font-size 14px
+
 
 /*****  main  *****/
 
@@ -268,9 +267,18 @@ blockquote
 .navbar
   border-radius 0
   margin-bottom 0
+  cursor default
+  user-select none
+  -moz-user-select none
+  -ms-user-select none
+  -webkit-user-select none
 
   .navbar-right
     padding-right 0
+
+    a
+      cursor pointer !important
+      line-height 24px !important
 
     .navbar-form
       padding-right 0
@@ -308,9 +316,6 @@ blockquote
     float none
     margin -2px 6px 0 9px
 
-  a
-    cursor pointer !important
-    line-height 24px !important
 
 
 /*****  main  *****/
@@ -318,20 +323,19 @@ blockquote
 #memos
   min-height 800px
   padding 0 6px
-  background url("/src/images/pixels.png")
 
 #memos-wrapper
   margin 0 auto
 
+.memo-container
+  padding 5px
+  float left
+  margin-top 10px
+
 .memo
-  display inline-block
   position relative
-  width 280px
   border 1px solid $grey
   border-radius 5px
-  margin-top 20px
-  margin-left 5px
-  margin-right 5px
   padding 9px
   background-color $white
 
@@ -409,18 +413,17 @@ blockquote
       float right
 
   .content
-    width 260px
-    height 260px
     border 1px solid $bootstrap-grey
     bottom 12px
-    padding 6px
     overflow-y scroll
     text-overflow ellipsis
 
     &[data-type=doodle]
-      padding 0
       overflow hidden
 
+    img
+      width 100%
+      height 100%
 
 /*****  layers  *****/
 
@@ -437,9 +440,10 @@ blockquote
 
 .editor-layer
   position absolute
-  width 80%
-  max-width 500px
-  min-width 280px
+  width 260px
+  height 260px
+  /*max-width 500px
+  min-width 260px*/
   margin 0 auto
   top 50%
   left 50%
@@ -538,13 +542,13 @@ blockquote
       &[data-color=white]
         background-color $white
 
-
   #editor-doodle-content
     border 1px solid $grey
     cursor pointer
 
 
 /*****  reset  *****/
+
 
 @media (max-width 370px)
   #editor-doodle
@@ -556,25 +560,27 @@ blockquote
   #editor-doodle #canvas-wrapper
     bottom 5px
 
+  .memo-container
+    width 50%
+
 
 @media (min-width 370px) and (max-width 768px)
-  #memos-wrapper
-    width 290px
+  .memo-container
+    width 50%
 
 
 @media (min-width 768px) and (max-width 992px)
-  #memos-wrapper
-    width 580px
+  .memo-container
+    width 33.3%
 
 
 @media (min-width 992px) and (max-width 1200px)
-  #memos-wrapper
-    width 870px
+  .memo-container
+    width 25%
 
 
 @media (min-width 1200px)
-  #memos-wrapper
-    width 1160px
-
+  .memo-container
+    width 25%
 
 </style>
