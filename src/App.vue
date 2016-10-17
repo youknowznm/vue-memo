@@ -19,7 +19,7 @@
               <a class="create-new dropdown-toggle" data-toggle="dropdown" role="li">新建</a>
               <ul class="dropdown-menu">
                 <li class="add-text">
-                  <a>文本</a>
+                  <a>Markdown</a>
                 </li>
                 <li class="add-doodle">
                   <a>涂鸦</a>
@@ -98,26 +98,26 @@
       <memo-item v-for="memo in memosFiltered" :memo="memo"></memo-item>
     </div>
 
-    <!-- <div id="editor-text" class="editor-layer">
+    <div class="editor-text editor-layer">
       <div class="editor-top">
-        <input id="editor-title" type="text" class="editor-title form-control" placeholder="标题">
+        <input class="editor-title form-control" type="text" placeholder="标题">
         <ul class="tools">
           <li class="save"></li>
           <li class="cancel"></li>
         </ul>
       </div>
-      <textarea id="editor-text-content" class="form-control" placeholder="内容"></textarea>
-    </div> -->
+      <textarea class="text-content form-control" placeholder="内容"></textarea>
+    </div>
 
-    <!-- <div id="editor-doodle" class="editor-layer">
+    <div class="editor-doodle editor-layer">
       <div class="editor-top">
-        <input id="editor-title" type="text" class="form-control" placeholder="标题"></input>
+        <input class="editor-title form-control" type="text" placeholder="标题">
         <ul class="tools">
           <li class="save"></li>
           <li class="cancel"></li>
         </ul>
       </div>
-      <div id="canvas-wrapper">
+      <div class="canvas-wrapper">
         <ul class="colors">
           <li data-color="black"></li>
           <li data-color="green"></li>
@@ -130,9 +130,9 @@
           <li class="redo"></li>
           <li class="clear"></li>
         </ul>
-        <canvas id="editor-doodle-content" width='300' height=300></canvas>
+        <canvas class="doodle-content" width='260' height='260'></canvas>
       </div>
-    </div> -->
+    </div>
 
   </div>
 </template>
@@ -239,7 +239,7 @@ export default {
   updated () {
     resizeMemos();
   },
-}
+};
 
 // 在组件 updated 、窗口重载和尺寸改变时，修改 memo 样式
 const resizeMemos = () => {
@@ -308,6 +308,7 @@ blockquote
 .navbar
   border-radius 0
   margin-bottom 0
+  z-index 1
   cursor default
   user-select none
   -moz-user-select none
@@ -431,12 +432,6 @@ blockquote
         &.delete
           background url("/src/images/icons/icon-delete.png") no-repeat 0 0
 
-        &.save
-          background url("/src/images/icons/icon-save.png") no-repeat 0 0
-
-        &.cancel
-          background url("/src/images/icons/icon-cancel.png") no-repeat 0 0
-
     .title
       display inline-block
       margin-top 6px
@@ -483,112 +478,123 @@ blockquote
   z-index 2
 
 .editor-layer
+  display none
   position absolute
-  width 260px
-  height 260px
-  /*max-width 500px
-  min-width 260px*/
-  margin 0 auto
+  background-color #fff
   top 50%
   left 50%
-  z-index 3
-  padding 24px
+  margin-left -142px
+  margin-top -142px
+  padding 10px
   border 1px solid $bootstrap-grey
   border-radius 3px
   box-shadow 0 0 6px 0 $bootstrap-grey
+  z-index 3
 
   .editor-top
     position relative
+    margin-bottom 10px
     width 100%
 
     .tools
-      float right
+      position absolute
       top 6px
-      right 0
+      right 3px
 
-    #editor-title
+      > li
+        width 20px
+        height 20px
+        float left
+        margin-left 10px
+        opacity .5
+        transition opacity .2s ease-in-out
+
+        &:hover
+          cursor pointer
+          opacity 1
+
+        &.save
+          background url("/src/images/icons/icon-save.png") no-repeat 0 0
+
+        &.cancel
+          background url("/src/images/icons/icon-cancel.png") no-repeat 0 0
+
+    .editor-title
       width calc(100% - 66px)
 
-  #editor-text-content
-    margin-top 18px
+  .text-content
+    width 262px
+    height 262px
     resize none
 
-#editor-doodle
-  width 348px
-  height 398px
-  margin-left calc(-348px / 2)
-  margin-top calc((-398px / 2))
-  cursor pointer
-
-  *
-    cursor pointer
-
-#canvas-wrapper
-  position absolute
-  width 302px
-  height 302px
-  bottom 24px
-
-  .controllers
-    position absolute
-    top 6px
-    right 6px
-
-    > li
-      float left
-      width 24px
-      height 24px
-      opacity .5
-      transition opacity .2s ease-in-out
-
-      &:hover
-        cursor pointer
-        opacity 1
-
-      &.undo
-        background url("/src/images/icons/icon-undo.png") no-repeat 2px 2px
-        background-size 83.3%
-
-      &.redo
-        background url("/src/images/icons/icon-redo.png") no-repeat 2px 2px
-        background-size 83.3%
-
-      &.clear
-        background url("/src/images/icons/icon-clear.png") no-repeat 2px 2px
-        background-size 83.3%
-
-  .colors
-    position absolute
-    top 6px
-    left 0
-    padding 6px
-
-    > li
-      float left
-      width 16px
-      height 16px
-      margin-left 6px
-      border 2px solid $bootstrap-black
-      border-radius 50%
-      transition .2s ease-in-out
-
-      &:hover,
-      &.current
-        box-shadow 0 0 4px $bootstrap-black
-      &[data-color=green]
-        background-color $bootstrap-green
-      &[data-color=yellow]
-        background-color $bootstrap-yellow
-      &[data-color=red]
-        background-color $bootstrap-red
-      &[data-color=black]
-        background-color $bootstrap-black
-      &[data-color=white]
-        background-color $white
-
-  #editor-doodle-content
+  .canvas-wrapper
+    position relative
+    width 262px
+    height 262px
     border 1px solid $grey
-    cursor pointer
+
+    *
+      cursor pointer
+
+    .controllers
+      position absolute
+      top 6px
+      right 6px
+
+      > li
+        float left
+        width 24px
+        height 24px
+        opacity .5
+        transition opacity .2s ease-in-out
+
+        &:hover
+          cursor pointer
+          opacity 1
+
+        &.undo
+          background url("/src/images/icons/icon-undo.png") no-repeat 2px 2px
+          background-size 83.3%
+
+        &.redo
+          background url("/src/images/icons/icon-redo.png") no-repeat 2px 2px
+          background-size 83.3%
+
+        &.clear
+          background url("/src/images/icons/icon-clear.png") no-repeat 2px 2px
+          background-size 83.3%
+
+    .colors
+      position absolute
+      top 6px
+      left 0
+      padding 6px
+
+      > li
+        float left
+        width 16px
+        height 16px
+        margin-left 6px
+        border 2px solid $bootstrap-black
+        border-radius 50%
+        transition .2s ease-in-out
+
+        &:hover,
+        &.current
+          box-shadow 0 0 4px $bootstrap-black
+        &[data-color=green]
+          background-color $bootstrap-green
+        &[data-color=yellow]
+          background-color $bootstrap-yellow
+        &[data-color=red]
+          background-color $bootstrap-red
+        &[data-color=black]
+          background-color $bootstrap-black
+        &[data-color=white]
+          background-color $white
+
+    .doodle-content
+      cursor pointer
 
 
 /*****  reset  *****/
