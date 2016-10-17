@@ -1,7 +1,7 @@
 <template>
 <div class="memo-container">
   <div class="memo">
-    <button class="mark"></button>
+    <div class="mark" @click="markAsDone" :data-completed="memo.isCompleted ? true : false"></div>
     <div class="memo-heading">
       <h5 class="title">{{ memo.title }}</h5>
       <ul class="tools">
@@ -22,7 +22,10 @@
 </template>
 
 <script>
-import store from '../storage';
+import storeUtil from '../storage';
+import textEditor from './textEditor.vue';
+
+let store = storeUtil.store;
 
 export default {
   props: ['memo'],
@@ -36,6 +39,9 @@ export default {
       },
     };
   },
+  components: {
+    textEditor,
+  },
   methods: {
     marked,
     deleteMemo () {
@@ -43,6 +49,13 @@ export default {
         store.remove(this.memo);
         store.saveToLocalStorage();
       }
+    },
+    markAsDone () {
+      this.memo.isCompleted =
+        this.memo.isCompleted
+        ? false
+        : true;
+      store.saveToLocalStorage();
     },
   },
 }

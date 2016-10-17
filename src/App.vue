@@ -16,12 +16,12 @@
 
             <!--  新建  -->
             <li class="add dropdown">
-              <a class="create-new dropdown-toggle" data-toggle="dropdown" role="li">新建</a>
+              <a class="create-new dropdown-toggle" data-toggle="dropdown">新建</a>
               <ul class="dropdown-menu">
-                <li class="add-text">
+                <li @click="helpers.showEditorLayer('.editor-text')">
                   <a>Markdown</a>
                 </li>
-                <li class="add-doodle">
+                <li @click="helpers.showEditorLayer('.editor-doodle')">
                   <a>涂鸦</a>
                 </li>
               </ul>
@@ -41,19 +41,19 @@
                   </a>
                 </li>
                 <li class="divider"></li>
-                <li class="category" @click="filterBy(1, queryString)">
+                <li @click="filterBy(1, queryString)">
                   <a>
                     工作
                     <span class="count badge">{{ memosInWorkCate.length }}</span>
                   </a>
                 </li>
-                <li class="category" @click="filterBy(2, queryString)">
+                <li @click="filterBy(2, queryString)">
                   <a>
                     生活
                     <span class="count badge">{{ memosInLivingCate.length }}</span>
                   </a>
                 </li>
-                <li class="category" @click="filterBy(3, queryString)">
+                <li @click="filterBy(3, queryString)">
                   <a>
                     学习
                     <span class="count badge">{{ memosInStudyCate.length }}</span>
@@ -83,7 +83,7 @@
                 <input
                   type="text"
                   class="search-box form-control"
-                  placeholder="过滤标题、内容、创建时间"
+                  placeholder="过滤标题、内容、时间戳"
                   v-model="queryString"
                   @keyup="filterBy(currentCategoryId, queryString)">
               </form>
@@ -100,21 +100,47 @@
 
     <div class="editor-text editor-layer">
       <div class="editor-top">
-        <input class="editor-title form-control" type="text" placeholder="标题">
+        <input class="editor-title form-control" type="text" placeholder="标题"
+          v-model="editor.markdownTitle">
+        <div class="dropdown select-category">
+          <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            {{ categories[editor.markdownCategoryId] }}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li @click="editor.markdownCategoryId = 1"><a>工作</a></li>
+            <li @click="editor.markdownCategoryId = 2"><a>生活</a></li>
+            <li @click="editor.markdownCategoryId = 3"><a>学习</a></li>
+          </ul>
+        </div>
         <ul class="tools">
-          <li class="save"></li>
-          <li class="cancel"></li>
+          <li class="save" @click="saveMarkdown"></li>
+          <li class="cancel" @click="helpers.hideEditorLayer('.editor-text')"></li>
         </ul>
       </div>
-      <textarea class="text-content form-control" placeholder="内容"></textarea>
+      <textarea class="text-content form-control" placeholder="内容"
+        v-model="editor.markdownContent">
+      </textarea>
     </div>
 
     <div class="editor-doodle editor-layer">
       <div class="editor-top">
-        <input class="editor-title form-control" type="text" placeholder="标题">
+        <input class="editor-title form-control" type="text" placeholder="标题"
+          v-model="editor.doodleTitle">
+        <div class="dropdown select-category">
+          <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            {{ categories[editor.doodleCategoryId] }}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li @click="editor.doodleCategoryId = 1"><a>工作</a></li>
+            <li @click="editor.doodleCategoryId = 2"><a>生活</a></li>
+            <li @click="editor.doodleCategoryId = 3"><a>学习</a></li>
+          </ul>
+        </div>
         <ul class="tools">
           <li class="save"></li>
-          <li class="cancel"></li>
+          <li class="cancel" @click="helpers.hideEditorLayer('.editor-doodle')"></li>
         </ul>
       </div>
       <div class="canvas-wrapper">
@@ -138,12 +164,17 @@
 </template>
 
 <script>
-import store from './storage';
+import storeUtil from './storage';
+import helpers from './helpers';
 import memoItem from './components/memoItem.vue';
+
+let store = storeUtil.store;
+let Memo = storeUtil.Memo;
 
 export default {
   data () {
     return {
+      // memo 对象相关
       memos: store.memos,
       memosFiltered: [],
       currentSortBy: '',
@@ -155,12 +186,26 @@ export default {
         2: '生活',
         3: '学习',
       },
+      // 样式相关
+      helpers,
+      // 新建
+      editor: {
+        markdownTitle: '',
+        markdownContent: '',
+        markdownCategoryId: 1,
+        doodleTitle: '',
+        doodleContent: '',
+        doodleCategoryId: 1,
+        // 被编辑的 memo 对象
+        memoEditing: null,
+      },
     };
   },
   components: {
     memoItem,
   },
   methods: {
+    // 过滤
     filterBy (categoryId, queryString) {
       let result = [];
       // 先按照【类别id】过滤
@@ -174,11 +219,11 @@ export default {
           this.currentCategoryId = 1;
           break;
         case 2:
-          result = this.memosInStudyCate;
+          result = this.memosInLivingCate;
           this.currentCategoryId = 2;
           break;
         case 3:
-          result = this.memosInLivingCate;
+          result = this.memosInStudyCate;
           this.currentCategoryId = 3;
           break;
       }
@@ -200,7 +245,7 @@ export default {
       this.memosFiltered = result;
       this.sortByTimeOrTitle('title');
     },
-    // 按【类别】或【创建时间】排序
+    // 排序
     sortByTimeOrTitle (option) {
       this.memosFiltered.sort((m1, m2) => {
         if (m1[option] < m2[option]) {
@@ -213,6 +258,18 @@ export default {
         option === 'timeStamp'
         ? '按创建时间排序'
         : '按标题排序';
+    },
+    // 新建
+    saveMarkdown () {
+      store.add(new Memo({
+        categoryId: this.editor.markdownCategoryId,
+        title: this.editor.markdownTitle,
+        type: 0,
+        content: this.editor.markdownContent,
+      }));
+      helpers.hideEditorLayer('.editor-text');
+      store.saveToLocalStorage();
+      this.editor.markdownContent = this.editor.markdownTitle = '';
     },
   },
   computed: {
@@ -232,25 +289,21 @@ export default {
       });
     },
   },
+  // 周期钩子
   mounted () {
     this.filterBy(0, this.queryString);
     this.sortByTimeOrTitle('title');
   },
   updated () {
-    resizeMemos();
+    helpers.resizeMemos();
   },
 };
 
-// 在组件 updated 、窗口重载和尺寸改变时，修改 memo 样式
-const resizeMemos = () => {
-  const memoWidth = $('.memo').eq(0).width();
-  $('.memo').height(memoWidth + 65);
-  $('.memo .content').width(memoWidth).height(memoWidth);
-};
 
 $(window).on('resize load', () => {
-  resizeMemos();
+  helpers.resizeMemos();
 });
+
 
 </script>
 
@@ -318,18 +371,15 @@ blockquote
   .navbar-right
     padding-right 0
 
-    .search-box
-      min-width 210px
-
     a
       cursor pointer !important
       line-height 24px !important
 
     .navbar-form
-      padding-right 0
+      padding 0
 
-    .sort-by
-      min-width 135px
+      .search-box
+        width 180px
 
   .dropdown-toggle
     position relative
@@ -396,6 +446,9 @@ blockquote
     background-size 18px 18px
     transition all .2s ease-in-out
     cursor pointer
+
+    &[data-completed=true]
+      display block
 
     &:hover
       transform scale(1.2)
@@ -499,7 +552,7 @@ blockquote
     .tools
       position absolute
       top 6px
-      right 3px
+      right 0
 
       > li
         width 20px
@@ -520,7 +573,15 @@ blockquote
           background url("/src/images/icons/icon-cancel.png") no-repeat 0 0
 
     .editor-title
-      width calc(100% - 66px)
+      width calc(100% - 140px)
+
+    .select-category
+      position absolute
+      right 62px
+      top 0
+
+      .dropdown-menu
+        min-width 0
 
   .text-content
     width 262px

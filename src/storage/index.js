@@ -14,7 +14,7 @@ const toReadableDate = (timeStamp) => {
 
 class Memo {
   constructor(obj) {
-    // 0工作 1生活 2学习
+    // 1工作 2生活 3学习
     this.categoryId = obj.categoryId;
     // 20字符内的字符串
     this.title = obj.title;
@@ -153,4 +153,9 @@ if (localStorage.getItem('store') !== null) {
   store.init();
 }
 
-export default store;
+let storeUtil = {
+  store,
+  Memo,
+}
+
+export default storeUtil;
