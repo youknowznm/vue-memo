@@ -72,8 +72,6 @@ class VueMemoStore {
   }
   add (memo) {
     this.memos.push(memo);
-    // 可读的时间字符串
-    memo.timeStampReadable = toReadableDate(memo.timeStamp);
   }
   remove (memo) {
     this.memos.splice(this.memos.indexOf(memo), 1);

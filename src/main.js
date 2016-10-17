@@ -7,8 +7,6 @@ new Vue({
 });
 
 
-
-
 const setCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
 
   // 颜色值对象

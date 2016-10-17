@@ -13,51 +13,56 @@
         </div>
         <div class="collapse navbar-collapse navbar-right">
           <ul class="nav navbar-nav">
+
+            <!--  新建  -->
             <li class="add dropdown">
               <a class="create-new dropdown-toggle" data-toggle="dropdown" role="li">新建</a>
               <ul class="dropdown-menu">
                 <li class="add-text">
-                  <a>
-                    文本
-                  </a>
+                  <a>文本</a>
                 </li>
                 <li class="add-doodle">
-                  <a>
-                    涂鸦
-                  </a>
+                  <a>涂鸦</a>
                 </li>
               </ul>
             </li>
 
+            <!--  类别过滤器  -->
             <li class="categories dropdown">
-              <a class="current-category dropdown-toggle" data-toggle="dropdown" role="li">
-                {{ categories[currentCategoryId] }}<span class="count badge">{{ memosFiltered.length }}</span>
+              <a class="current-category dropdown-toggle" data-toggle="dropdown">
+                {{ categories[currentCategoryId] }}
+                <span class="count badge">{{ memosFiltered.length }}</span>
               </a>
               <ul class="dropdown-menu">
                 <li class="total" @click="filterBy(0, queryString)">
                   <a>
-                    全部<span class="count badge">{{ memos.length }}</span>
+                    全部
+                    <span class="count badge">{{ memos.length }}</span>
                   </a>
                 </li>
                 <li class="divider"></li>
                 <li class="category" @click="filterBy(1, queryString)">
                   <a>
-                    工作<span class="count badge">{{ memosInWorkCate.length }}</span>
+                    工作
+                    <span class="count badge">{{ memosInWorkCate.length }}</span>
                   </a>
                 </li>
                 <li class="category" @click="filterBy(2, queryString)">
                   <a>
-                    生活<span class="count badge">{{ memosInLivingCate.length }}</span>
+                    生活
+                    <span class="count badge">{{ memosInLivingCate.length }}</span>
                   </a>
                 </li>
                 <li class="category" @click="filterBy(3, queryString)">
                   <a>
-                    学习<span class="count badge">{{ memosInStudyCate.length }}</span>
+                    学习
+                    <span class="count badge">{{ memosInStudyCate.length }}</span>
                   </a>
                 </li>
               </ul>
             </li>
 
+            <!--  排序器  -->
             <li class="sort-by dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">
                 {{ currentSortBy }}
@@ -71,6 +76,8 @@
                 </li>
               </ul>
             </li>
+
+            <!--  字符串过滤器  -->
             <li>
               <form class="navbar-form">
                 <input
@@ -88,16 +95,7 @@
     </nav>
 
     <div id="memos" class="container">
-
-      <memo-item v-for="memo in memosFiltered"
-        :categoryId="memo.categoryId"
-        :type="memo.type"
-        :title="memo.title"
-        :content="memo.content"
-        :timeStamp="memo.timeStamp"
-        :isCompleted="memo.isCompleted">
-      </memo-item>
-
+      <memo-item v-for="memo in memosFiltered" :memo="memo"></memo-item>
     </div>
 
     <!-- <div id="editor-text" class="editor-layer">
