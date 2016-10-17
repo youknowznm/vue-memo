@@ -6,27 +6,7 @@ new Vue({
   render: h => h(App)
 });
 
-const resizeMemosAndEditLayers = () => {
-  const memoWidth = $('.memo').eq(0).width();
-  $('.memo').height(memoWidth + 65);
-  console.log(memoWidth);
-  $('.memo .content')
-    .width(memoWidth)
-    .height(memoWidth);
 
-
-  let editLayerHeight = $('.editor-layer').width() + 50;
-  $('#editor-text')
-    .height(editLayerHeight)
-    .css('marginTop', -(editLayerHeight / 2))
-    .css('marginLeft', -(editLayerHeight / 2));
-  $('#editor-text-content').height(editLayerHeight - 64);
-}
-
-
-$(window).on('resize load', () => {
-  resizeMemosAndEditLayers();
-});
 
 
 const setCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {

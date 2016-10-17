@@ -10,7 +10,7 @@
       </ul>
     </div>
     <h6 class="memo-info">
-      <span class="timeStampParsed">{{ timeStampParsed | toReadableDate }}</span>
+      <span class="timeStamp">{{ timeStamp }}</span>
       <span class="category">分类: {{ categories[categoryId] }}</span>
     </h6>
     <div class="content" :data-type="type === 0 ? 'text' : 'doodle'">
@@ -23,22 +23,18 @@
 
 <script>
 import store from '../storage';
-import filters from '../filters';
 
 export default {
-  props: ['categoryId', 'type', 'title', 'content', 'timeStampParsed', 'isCompleted'],
+  props: ['categoryId', 'type', 'title', 'content', 'timeStamp', 'isCompleted'],
   data () {
     return {
       memos: store.memos,
       categories: {
-        0: '工作',
-        1: '生活',
-        2: '学习',
+        1: '工作',
+        2: '生活',
+        3: '学习',
       },
     };
-  },
-  filters: {
-    toReadableDate: filters.toReadableDate,
   },
   methods: {
     marked,

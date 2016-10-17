@@ -31,26 +31,26 @@
 
             <li class="categories dropdown">
               <a class="current-category dropdown-toggle" data-toggle="dropdown" role="li">
-                {{ currentCategory }}<span class="count badge">{{ filteredMemos.length }}</span>
+                {{ categories[currentCategoryId] }}<span class="count badge">{{ memosFiltered.length }}</span>
               </a>
               <ul class="dropdown-menu">
-                <li class="total" @click="filterByCategoryId()">
+                <li class="total" @click="filterBy(0, queryString)">
                   <a>
                     全部<span class="count badge">{{ memos.length }}</span>
                   </a>
                 </li>
                 <li class="divider"></li>
-                <li class="category" @click="filterByCategoryId(0)">
+                <li class="category" @click="filterBy(1, queryString)">
                   <a>
                     工作<span class="count badge">{{ memosInWorkCate.length }}</span>
                   </a>
                 </li>
-                <li class="category" @click="filterByCategoryId(1)">
+                <li class="category" @click="filterBy(2, queryString)">
                   <a>
                     生活<span class="count badge">{{ memosInLivingCate.length }}</span>
                   </a>
                 </li>
-                <li class="category" @click="filterByCategoryId(2)">
+                <li class="category" @click="filterBy(3, queryString)">
                   <a>
                     学习<span class="count badge">{{ memosInStudyCate.length }}</span>
                   </a>
@@ -63,7 +63,7 @@
                 {{ currentSortBy }}
               </a>
               <ul class="dropdown-menu">
-                <li @click="sortByTimeOrTitle('timeStampParsed')">
+                <li @click="sortByTimeOrTitle('timeStamp')">
                   <a>按创建时间排序</a>
                 </li>
                 <li @click="sortByTimeOrTitle('title')">
@@ -73,7 +73,12 @@
             </li>
             <li>
               <form class="navbar-form">
-                <input type="text" class="search-box form-control" placeholder="过滤关键字">
+                <input
+                  type="text"
+                  class="search-box form-control"
+                  placeholder="过滤标题、内容、创建时间"
+                  v-model="queryString"
+                  @keyup="filterBy(currentCategoryId, queryString)">
               </form>
             </li>
 
@@ -84,18 +89,18 @@
 
     <div id="memos" class="container">
 
-      <memo-item v-for="memo in filteredMemos"
+      <memo-item v-for="memo in memosFiltered"
         :categoryId="memo.categoryId"
         :type="memo.type"
         :title="memo.title"
         :content="memo.content"
-        :timeStampParsed="memo.timeStampParsed"
+        :timeStamp="memo.timeStamp"
         :isCompleted="memo.isCompleted">
       </memo-item>
 
     </div>
 
-    <div id="editor-text" class="editor-layer">
+    <!-- <div id="editor-text" class="editor-layer">
       <div class="editor-top">
         <input id="editor-title" type="text" class="editor-title form-control" placeholder="标题">
         <ul class="tools">
@@ -104,9 +109,9 @@
         </ul>
       </div>
       <textarea id="editor-text-content" class="form-control" placeholder="内容"></textarea>
-    </div>
+    </div> -->
 
-    <div id="editor-doodle" class="editor-layer">
+    <!-- <div id="editor-doodle" class="editor-layer">
       <div class="editor-top">
         <input id="editor-title" type="text" class="form-control" placeholder="标题"></input>
         <ul class="tools">
@@ -129,7 +134,7 @@
         </ul>
         <canvas id="editor-doodle-content" width='300' height=300></canvas>
       </div>
-    </div>
+    </div> -->
 
   </div>
 </template>
@@ -138,22 +143,68 @@
 import store from './storage';
 import memoItem from './components/memoItem.vue';
 
-
 export default {
   data () {
     return {
       memos: store.memos,
+      memosFiltered: [],
       currentSortBy: '',
-      currentCategory: '全部',
-      filteredMemos: store.memos,
+      currentCategoryId: '',
+      queryString: '',
+      categories: {
+        0: '全部',
+        1: '工作',
+        2: '生活',
+        3: '学习',
+      },
     };
   },
   components: {
     memoItem,
   },
   methods: {
+    filterBy (categoryId, queryString) {
+      let result = [];
+      // 先按照【类别id】过滤
+      switch (categoryId) {
+        case 0:
+          result = this.memos;
+          this.currentCategoryId = 0;
+          break;
+        case 1:
+          result = this.memosInWorkCate;
+          this.currentCategoryId = 1;
+          break;
+        case 2:
+          result = this.memosInStudyCate;
+          this.currentCategoryId = 2;
+          break;
+        case 3:
+          result = this.memosInLivingCate;
+          this.currentCategoryId = 3;
+          break;
+      }
+      if (queryString !== '') {
+        result = result.filter((item) => {
+          let matchesQuery = false;
+          // 若【标题】或【日期字符串】包含查询字符串
+          if (item.title.indexOf(queryString) !== -1 || item.timeStamp.indexOf(queryString) !== -1) {
+            matchesQuery = true;
+          }
+          // 或【文本类型 memo 的内容】包含查询字符串
+          if (item.type === 0 && item.content.indexOf(queryString) !== -1) {
+            matchesQuery = true;
+          }
+          // 则过滤之
+          return matchesQuery;
+        });
+      }
+      this.memosFiltered = result;
+      this.sortByTimeOrTitle('title');
+    },
+    // 按【类别】或【创建时间】排序
     sortByTimeOrTitle (option) {
-      this.filteredMemos.sort((m1, m2) => {
+      this.memosFiltered.sort((m1, m2) => {
         if (m1[option] < m2[option]) {
           return -1;
         } else {
@@ -161,56 +212,48 @@ export default {
         }
       });
       this.currentSortBy =
-        option === 'timeStampParsed'
+        option === 'timeStamp'
         ? '按创建时间排序'
         : '按标题排序';
     },
-    filterByCategoryId (categoryId) {
-      switch (categoryId) {
-        case 0:
-          this.filteredMemos = this.memosInWorkCate;
-          this.currentCategory = '工作';
-          break;
-        case 1:
-          this.filteredMemos = this.memosInLivingCate;
-          this.currentCategory = '生活';
-          break;
-        case 2:
-          this.filteredMemos = this.memosInStudyCate;
-          this.currentCategory = '学习';
-          break;
-        case undefined:
-          this.filteredMemos = this.memos;
-          this.currentCategory = '全部';
-          break;
-      }
-      this.sortByTimeOrTitle('title');
-    },
-  },
-  filters: {
-
   },
   computed: {
     memosInWorkCate () {
       return this.memos.filter((item) => {
-        return item.categoryId === 0;
+        return item.categoryId === 1;
       });
     },
     memosInLivingCate () {
       return this.memos.filter((item) => {
-        return item.categoryId === 1;
+        return item.categoryId === 2;
       });
     },
     memosInStudyCate () {
       return this.memos.filter((item) => {
-        return item.categoryId === 2;
+        return item.categoryId === 3;
       });
     },
   },
   mounted () {
+    this.filterBy(0, this.queryString);
     this.sortByTimeOrTitle('title');
   },
+  updated () {
+    resizeMemos();
+  },
 }
+
+// 在组件 updated 、窗口重载和尺寸改变时，修改 memo 样式
+const resizeMemos = () => {
+  const memoWidth = $('.memo').eq(0).width();
+  $('.memo').height(memoWidth + 65);
+  $('.memo .content').width(memoWidth).height(memoWidth);
+};
+
+$(window).on('resize load', () => {
+  resizeMemos();
+});
+
 </script>
 
 <style lang="stylus">
@@ -275,6 +318,9 @@ blockquote
 
   .navbar-right
     padding-right 0
+
+    .search-box
+      min-width 210px
 
     a
       cursor pointer !important
