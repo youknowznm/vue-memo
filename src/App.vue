@@ -18,10 +18,10 @@
             <li class="add dropdown">
               <a class="create-new dropdown-toggle" data-toggle="dropdown">新建</a>
               <ul class="dropdown-menu">
-                <li @click="helpers.showEditorLayer('.editor-text')">
+                <li @click="launchMarkdownEditor">
                   <a>Markdown</a>
                 </li>
-                <li @click="helpers.showEditorLayer('.editor-doodle')">
+                <li @click="launchDoodleEditor">
                   <a>涂鸦</a>
                 </li>
               </ul>
@@ -98,7 +98,7 @@
       <memo-item v-for="memo in memosFiltered" :memo="memo"></memo-item>
     </div>
 
-    <div class="editor-text editor-layer">
+    <div class="editor-markdown editor-layer">
       <div class="editor-top">
         <input class="editor-title form-control" type="text" placeholder="标题"
           v-model="editor.markdownTitle">
@@ -114,8 +114,8 @@
           </ul>
         </div>
         <ul class="tools">
-          <li class="save" @click="saveMarkdown"></li>
-          <li class="cancel" @click="helpers.hideEditorLayer('.editor-text')"></li>
+          <li class="save" @click="saveMarkdownMemo"></li>
+          <li class="cancel" @click="helpers.hideEditorLayer('.editor-markdown')"></li>
         </ul>
       </div>
       <textarea class="text-content form-control" placeholder="内容"
@@ -139,19 +139,19 @@
           </ul>
         </div>
         <ul class="tools">
-          <li class="save"></li>
+          <li class="save" @click="saveDoodleMemo"></li>
           <li class="cancel" @click="helpers.hideEditorLayer('.editor-doodle')"></li>
         </ul>
       </div>
       <div class="canvas-wrapper">
-        <ul class="colors">
+        <ul class="doodle-colors">
           <li data-color="black"></li>
           <li data-color="green"></li>
           <li data-color="yellow"></li>
           <li data-color="red"></li>
           <li data-color="white"></li>
         </ul>
-        <ul class="controllers">
+        <ul class="doodle-controllers">
           <li class="undo"></li>
           <li class="redo"></li>
           <li class="clear"></li>
@@ -259,17 +259,42 @@ export default {
         ? '按创建时间排序'
         : '按标题排序';
     },
-    // 新建
-    saveMarkdown () {
+    // 新建和编辑
+    launchMarkdownEditor (imageData) {
+      helpers.showEditorLayer('.editor-markdown');
+    },
+    saveMarkdownMemo () {
       store.add(new Memo({
         categoryId: this.editor.markdownCategoryId,
         title: this.editor.markdownTitle,
         type: 0,
         content: this.editor.markdownContent,
       }));
-      helpers.hideEditorLayer('.editor-text');
+      helpers.hideEditorLayer('.editor-markdown');
       store.saveToLocalStorage();
       this.editor.markdownContent = this.editor.markdownTitle = '';
+    },
+    launchDoodleEditor (imageData) {
+      let $doodleEditor = helpers.showEditorLayer('.editor-doodle');
+      // 部署画布和控制器相关的方法，提供 imageData 时画出来
+      helpers.initDoodle(
+        $doodleEditor.find('.doodle-content')[0],
+        $doodleEditor.find('.doodle-colors')[0],
+        $doodleEditor.find('.doodle-controllers')[0],
+        imageData,
+      );
+    },
+    saveDoodleMemo () {
+      this.editor.doodleContent = $('.doodle-content')[0].toDataURL();
+      store.add(new Memo({
+        categoryId: this.editor.doodleCategoryId,
+        title: this.editor.doodleTitle,
+        type: 1,
+        content: this.editor.doodleContent,
+      }));
+      helpers.hideEditorLayer('.editor-doodle');
+      store.saveToLocalStorage();
+      this.editor.doodleContent = this.editor.doodleContent = '';
     },
   },
   computed: {
@@ -300,398 +325,9 @@ export default {
 };
 
 
-$(window).on('resize load', () => {
-  helpers.resizeMemos();
-});
-
 
 </script>
 
 <style lang="stylus">
-
-$tint-grey = #e1e1e1
-$grey = #bdbdbd
-$dark-grey = #757575
-
-$tint-blue = #4dabf5
-$blue = #2196f3
-$dark-blue = #207FDC
-
-$bootstrap-grey = rgb(248, 248, 248)
-$bootstrap-green = #5cb85c
-$bootstrap-yellow = #f0ad4e
-$bootstrap-red = #d9534f
-$bootstrap-black = #222
-
-$white = #fff
-
-/*****  global  *****/
-
-[v-cloak] {
-  display: none;
-}
-
-*
-  padding 0
-  margin 0
-  border 0
-  list-style none
-  text-decoration none
-
-body
-  padding-top 50px
-  background url("/src/images/pixels.png")
-
-blockquote
-  p
-    font-size 14px
-
-
-/*****  main  *****/
-
-#vue-memo
-  border 1px solid $tint-grey
-  box-shadow 0 0 4px 0 $tint-grey
-  padding 0
-  z-index 1
-
-
-/*****  header  *****/
-
-.navbar
-  border-radius 0
-  margin-bottom 0
-  z-index 1
-  cursor default
-  user-select none
-  -moz-user-select none
-  -ms-user-select none
-  -webkit-user-select none
-
-  .navbar-right
-    padding-right 0
-
-    a
-      cursor pointer !important
-      line-height 24px !important
-
-    .navbar-form
-      padding 0
-
-      .search-box
-        width 180px
-
-  .dropdown-toggle
-    position relative
-    padding-right 45px !important
-    transition .2s ease-in-out
-
-    &:hover
-      background rgb(231, 231, 231) !important
-
-    &:after
-      content ' '
-      width 24px
-      height 24px
-      background url("/src/images/icons/icon-dropdown.png") 0 0 no-repeat
-      position absolute
-      right 18px
-      opacity .6
-      top 8px
-
-      @media (min-width 768px)
-        top 15px
-
-  .count
-    border-radius 5px
-    float right
-    margin-top 3px
-
-  .current-category .count
-    float none
-    margin -2px 6px 0 9px
-
-
-
-/*****  main  *****/
-
-#memos
-  min-height 800px
-  padding 0 6px
-
-#memos-wrapper
-  margin 0 auto
-
-.memo-container
-  padding 5px
-  float left
-  margin-top 10px
-
-.memo
-  position relative
-  border 1px solid $grey
-  border-radius 5px
-  padding 9px
-  background-color $white
-
-  .mark
-    display none
-    position absolute
-    width 24px
-    height 24px
-    top -8px
-    left -8px
-    border-radius 50%
-    background $tint-blue url("/src/images/icons/icon-done.svg") no-repeat 3px 3px
-    background-size 18px 18px
-    transition all .2s ease-in-out
-    cursor pointer
-
-    &[data-completed=true]
-      display block
-
-    &:hover
-      transform scale(1.2)
-
-  &:hover
-    border-color $dark-blue
-
-    .mark
-      display block
-
-  .memo-heading
-    position relative
-    width 100%
-
-    .tools
-      float right
-      margin-top 6px
-
-      > li
-        width 20px
-        height 20px
-        float left
-        margin-left 10px
-        opacity .5
-        transition opacity .2s ease-in-out
-
-        &:hover
-          cursor pointer
-          opacity 1
-
-        &.edit
-          background url("/src/images/icons/icon-edit.png") no-repeat 0 0
-
-        &.delete
-          background url("/src/images/icons/icon-delete.png") no-repeat 0 0
-
-    .title
-      display inline-block
-      margin-top 6px
-      margin-bottom 6px
-      padding-bottom 6px
-      border-bottom 1px solid $grey
-      text-overflow ellipsis
-      white-space nowrap
-      overflow hidden
-      max-width calc(100% - 60px)
-
-  .memo-info
-    margin 0 auto 12px
-    color $dark-grey
-    font-weight 300
-
-    .category
-      float right
-
-  .content
-    border 1px solid $bootstrap-grey
-    bottom 12px
-    overflow-y scroll
-    text-overflow ellipsis
-
-    &[data-type=doodle]
-      overflow hidden
-
-    img
-      width 100%
-      height 100%
-
-/*****  layers  *****/
-
-.cover-layer
-  display none
-  position absolute
-  top 0
-  left 0
-  width 100%
-  height 100%
-  background-color $bootstrap-black
-  opacity .5
-  z-index 2
-
-.editor-layer
-  display none
-  position absolute
-  background-color #fff
-  top 50%
-  left 50%
-  margin-left -142px
-  margin-top -142px
-  padding 10px
-  border 1px solid $bootstrap-grey
-  border-radius 3px
-  box-shadow 0 0 6px 0 $bootstrap-grey
-  z-index 3
-
-  .editor-top
-    position relative
-    margin-bottom 10px
-    width 100%
-
-    .tools
-      position absolute
-      top 6px
-      right 0
-
-      > li
-        width 20px
-        height 20px
-        float left
-        margin-left 10px
-        opacity .5
-        transition opacity .2s ease-in-out
-
-        &:hover
-          cursor pointer
-          opacity 1
-
-        &.save
-          background url("/src/images/icons/icon-save.png") no-repeat 0 0
-
-        &.cancel
-          background url("/src/images/icons/icon-cancel.png") no-repeat 0 0
-
-    .editor-title
-      width calc(100% - 140px)
-
-    .select-category
-      position absolute
-      right 62px
-      top 0
-
-      .dropdown-menu
-        min-width 0
-
-  .text-content
-    width 262px
-    height 262px
-    resize none
-
-  .canvas-wrapper
-    position relative
-    width 262px
-    height 262px
-    border 1px solid $grey
-
-    *
-      cursor pointer
-
-    .controllers
-      position absolute
-      top 6px
-      right 6px
-
-      > li
-        float left
-        width 24px
-        height 24px
-        opacity .5
-        transition opacity .2s ease-in-out
-
-        &:hover
-          cursor pointer
-          opacity 1
-
-        &.undo
-          background url("/src/images/icons/icon-undo.png") no-repeat 2px 2px
-          background-size 83.3%
-
-        &.redo
-          background url("/src/images/icons/icon-redo.png") no-repeat 2px 2px
-          background-size 83.3%
-
-        &.clear
-          background url("/src/images/icons/icon-clear.png") no-repeat 2px 2px
-          background-size 83.3%
-
-    .colors
-      position absolute
-      top 6px
-      left 0
-      padding 6px
-
-      > li
-        float left
-        width 16px
-        height 16px
-        margin-left 6px
-        border 2px solid $bootstrap-black
-        border-radius 50%
-        transition .2s ease-in-out
-
-        &:hover,
-        &.current
-          box-shadow 0 0 4px $bootstrap-black
-        &[data-color=green]
-          background-color $bootstrap-green
-        &[data-color=yellow]
-          background-color $bootstrap-yellow
-        &[data-color=red]
-          background-color $bootstrap-red
-        &[data-color=black]
-          background-color $bootstrap-black
-        &[data-color=white]
-          background-color $white
-
-    .doodle-content
-      cursor pointer
-
-
-/*****  reset  *****/
-
-
-@media (max-width 370px)
-  #editor-doodle
-    padding 5px
-    width 310px
-    height 355px
-    margin-left -155px
-
-  #editor-doodle #canvas-wrapper
-    bottom 5px
-
-  .memo-container
-    width 50%
-
-
-@media (min-width 370px) and (max-width 768px)
-  .memo-container
-    width 50%
-
-
-@media (min-width 768px) and (max-width 992px)
-  .memo-container
-    width 33.3%
-
-
-@media (min-width 992px) and (max-width 1200px)
-  .memo-container
-    width 25%
-
-
-@media (min-width 1200px)
-  .memo-container
-    width 25%
-
+@import './style/main'
 </style>
