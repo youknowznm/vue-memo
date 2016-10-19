@@ -1,6 +1,7 @@
 <template>
   <div id="vue-memo">
 
+    <!--  工具栏  -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -167,10 +168,8 @@
 import storeUtil from './storage';
 import helpers from './helpers';
 import memoItem from './components/memoItem.vue';
-
 let store = storeUtil.store;
 let Memo = storeUtil.Memo;
-
 export default {
   data () {
     return {
@@ -315,17 +314,12 @@ export default {
     },
   },
   // 周期钩子
-  mounted () {
+  ready () {
     this.filterBy(0, this.queryString);
     this.sortByTimeOrTitle('title');
-  },
-  updated () {
     helpers.resizeMemos();
   },
 };
-
-
-
 </script>
 
 <style lang="stylus">

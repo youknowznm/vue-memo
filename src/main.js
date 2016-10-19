@@ -3,11 +3,11 @@ import App from './App.vue'
 import helpers from './helpers'
 
 new Vue({
-  el: '#vue-memo',
-  render: h => h(App)
-});
+  el: 'body',
+  components: { App }
+})
 
 //
-$(window).on('resize load', () => {
+$(window).on('resize', () => {
   helpers.resizeMemos();
 });

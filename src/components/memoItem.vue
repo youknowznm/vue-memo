@@ -1,7 +1,7 @@
 <template>
 <div class="memo-container">
-  <div class="memo">
-    <div class="mark" @click="markAsDone" :data-completed="memo.isCompleted ? true : false"></div>
+  <div class="memo" :data-completed="memo.isCompleted ? true : false">
+    <div class="mark" @click="markAsDone"></div>
     <div class="memo-heading">
       <h5 class="title">{{ memo.title }}</h5>
       <ul class="tools">

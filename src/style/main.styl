@@ -1,6 +1,5 @@
 /*****
-colors from
-google design and bootstrap
+colors from google design and bootstrap
 *****/
 
 $tint-grey = #e1e1e1
@@ -74,10 +73,10 @@ blockquote
       line-height 24px !important
 
     .navbar-form
-      padding 0
+      padding-right 0
 
-      .search-box
-        width 180px
+    .search-box
+      min-width 180px
 
   .dropdown-toggle
     position relative
@@ -130,6 +129,20 @@ blockquote
   border-radius 5px
   padding 9px
   background-color $white
+  transition all .15s ease-in-out
+
+  &:hover
+    box-shadow 0 0 10px 0 $dark-grey
+
+    .mark
+      display block
+
+  &[data-completed=true]
+    border-color $dark-blue
+
+    .mark
+      display block
+
 
   .mark
     display none
@@ -144,17 +157,10 @@ blockquote
     transition all .2s ease-in-out
     cursor pointer
 
-    &[data-completed=true]
-      display block
-
     &:hover
       transform scale(1.2)
 
-  &:hover
-    border-color $dark-blue
 
-    .mark
-      display block
 
   .memo-heading
     position relative
@@ -358,24 +364,13 @@ blockquote
 
 /*****  reset  *****/
 
-@media (max-width 370px)
-  #editor-doodle
-    padding 5px
-    width 310px
-    height 355px
-    margin-left -155px
-
-  #editor-doodle #canvas-wrapper
-    bottom 5px
+@media (max-width 768px)
 
   .memo-container
     width 50%
 
-
-@media (min-width 370px) and (max-width 768px)
-  .memo-container
-    width 50%
-
+    .search-box
+      text-indent 18px
 
 @media (min-width 768px) and (max-width 992px)
   .memo-container
