@@ -1,18 +1,26 @@
-# memo
+# vue-memo
 
-> A Vue.js project
+一个用 vue 1.0 写的在线笔记工具，实现了以下功能：
+  - 基本的增删、编辑笔记
+  - 按类别、标题、内容、时间戳进行过滤
+  - 按创建时间或标题排序
+  - 暂存未确认保存的笔记
+  - 支持 markdown 和涂鸦两种记录方式
+  - 用 localStorage 存取数据，不手动 clear 的话算是个本地的简易数据库吧
+  - 移动端适配（虽然体验不如桌面……不过我也不是设计师，已经尽力了）
+  
+![桌面端](http://)
 
-## Build Setup
+![移动端](http://)
+
+**移动端的涂鸦有个 bug 正在修…**
+
+## 怎么用？
 
 ``` bash
-# install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
 npm run dev
 
-# build for production with minification
 npm run build
 ```
-
-For more information see the [docs for vueify](https://github.com/vuejs/vueify).
