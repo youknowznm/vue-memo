@@ -1,11 +1,11 @@
 <template>
 <div class="memo-container">
-  <div class="memo" :data-completed="memo.isCompleted ? true : false">
+  <div class="memo" :data-completed="memo.isCompleted ? 'true' : 'false'">
     <div class="mark" @click="markAsDone"></div>
     <div class="memo-heading">
       <h5 class="title">{{ memo.title }}</h5>
       <ul class="tools">
-        <li class="edit"></li>
+        <li class="edit" @click="editMarkdown"></li>
         <li class="delete" @click="deleteMemo"></li>
       </ul>
     </div>
@@ -23,7 +23,7 @@
 
 <script>
 import storeUtil from '../storage';
-import textEditor from './textEditor.vue';
+import memoEditor from './memoEditor.vue';
 
 let store = storeUtil.store;
 
@@ -39,9 +39,6 @@ export default {
       },
     };
   },
-  components: {
-    textEditor,
-  },
   methods: {
     marked,
     deleteMemo () {
@@ -56,6 +53,17 @@ export default {
         ? false
         : true;
       store.saveToLocalStorage();
+    },
+    // 根据 memo 类型分发不同的方法
+    editMarkdown () {
+      switch (this.memo.type) {
+        case 0:
+          this.$dispatch('editMarkdown', this.memo);
+          break;
+        case 1:
+          this.$dispatch('editDoodle', this.memo);
+          break;
+      }
     },
   },
 }

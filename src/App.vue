@@ -19,14 +19,15 @@
             <li class="add dropdown">
               <a class="create-new dropdown-toggle" data-toggle="dropdown">新建</a>
               <ul class="dropdown-menu">
-                <li @click="launchMarkdownEditor">
+                <li @click="createMarkdown">
                   <a>Markdown</a>
                 </li>
-                <li @click="launchDoodleEditor">
+                <li @click="createDoodle">
                   <a>涂鸦</a>
                 </li>
               </ul>
             </li>
+            <!--  -->
 
             <!--  类别过滤器  -->
             <li class="categories dropdown">
@@ -62,6 +63,7 @@
                 </li>
               </ul>
             </li>
+            <!--  -->
 
             <!--  排序器  -->
             <li class="sort-by dropdown">
@@ -69,14 +71,15 @@
                 {{ currentSortBy }}
               </a>
               <ul class="dropdown-menu">
-                <li @click="sortByTimeOrTitle('timeStamp')">
-                  <a>按创建时间排序</a>
-                </li>
                 <li @click="sortByTimeOrTitle('title')">
                   <a>按标题排序</a>
                 </li>
+                <li @click="sortByTimeOrTitle('timeStamp')">
+                  <a>按创建时间排序</a>
+                </li>
               </ul>
             </li>
+            <!--  -->
 
             <!--  字符串过滤器  -->
             <li>
@@ -89,91 +92,37 @@
                   @keyup="filterBy(currentCategoryId, queryString)">
               </form>
             </li>
+            <!--  -->
 
           </ul>
         </div>
       </div>
     </nav>
 
+    <!--  memos  -->
     <div id="memos" class="container">
       <memo-item v-for="memo in memosFiltered" :memo="memo"></memo-item>
     </div>
+    <!--  -->
 
-    <div class="editor-markdown editor-layer">
-      <div class="editor-top">
-        <input class="editor-title form-control" type="text" placeholder="标题"
-          v-model="editor.markdownTitle">
-        <div class="dropdown select-category">
-          <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            {{ categories[editor.markdownCategoryId] }}
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li @click="editor.markdownCategoryId = 1"><a>工作</a></li>
-            <li @click="editor.markdownCategoryId = 2"><a>生活</a></li>
-            <li @click="editor.markdownCategoryId = 3"><a>学习</a></li>
-          </ul>
-        </div>
-        <ul class="tools">
-          <li class="save" @click="saveMarkdownMemo"></li>
-          <li class="cancel" @click="helpers.hideEditorLayer('.editor-markdown')"></li>
-        </ul>
-      </div>
-      <textarea class="text-content form-control" placeholder="内容"
-        v-model="editor.markdownContent">
-      </textarea>
-    </div>
-
-    <div class="editor-doodle editor-layer">
-      <div class="editor-top">
-        <input class="editor-title form-control" type="text" placeholder="标题"
-          v-model="editor.doodleTitle">
-        <div class="dropdown select-category">
-          <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            {{ categories[editor.doodleCategoryId] }}
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li @click="editor.doodleCategoryId = 1"><a>工作</a></li>
-            <li @click="editor.doodleCategoryId = 2"><a>生活</a></li>
-            <li @click="editor.doodleCategoryId = 3"><a>学习</a></li>
-          </ul>
-        </div>
-        <ul class="tools">
-          <li class="save" @click="saveDoodleMemo"></li>
-          <li class="cancel" @click="helpers.hideEditorLayer('.editor-doodle')"></li>
-        </ul>
-      </div>
-      <div class="canvas-wrapper">
-        <ul class="doodle-colors">
-          <li data-color="black"></li>
-          <li data-color="green"></li>
-          <li data-color="yellow"></li>
-          <li data-color="red"></li>
-          <li data-color="white"></li>
-        </ul>
-        <ul class="doodle-controllers">
-          <li class="undo"></li>
-          <li class="redo"></li>
-          <li class="clear"></li>
-        </ul>
-        <canvas class="doodle-content" width='260' height='260'></canvas>
-      </div>
-    </div>
+    <!--  编辑器  -->
+    <memo-editor></memo-editor>
+    <!--  -->
 
   </div>
 </template>
 
 <script>
 import storeUtil from './storage';
-import helpers from './helpers';
 import memoItem from './components/memoItem.vue';
+import memoEditor from './components/memoEditor.vue';
+
 let store = storeUtil.store;
 let Memo = storeUtil.Memo;
+
 export default {
   data () {
     return {
-      // memo 对象相关
       memos: store.memos,
       memosFiltered: [],
       currentSortBy: '',
@@ -185,23 +134,11 @@ export default {
         2: '生活',
         3: '学习',
       },
-      // 样式相关
-      helpers,
-      // 新建
-      editor: {
-        markdownTitle: '',
-        markdownContent: '',
-        markdownCategoryId: 1,
-        doodleTitle: '',
-        doodleContent: '',
-        doodleCategoryId: 1,
-        // 被编辑的 memo 对象
-        memoEditing: null,
-      },
     };
   },
   components: {
     memoItem,
+    memoEditor,
   },
   methods: {
     // 过滤
@@ -258,42 +195,12 @@ export default {
         ? '按创建时间排序'
         : '按标题排序';
     },
-    // 新建和编辑
-    launchMarkdownEditor (imageData) {
-      helpers.showEditorLayer('.editor-markdown');
+    // 接收 memoItem 组件分发来的事件，广播给 memoEditor 组件
+    createMarkdown () {
+      this.$broadcast('createMarkdown');
     },
-    saveMarkdownMemo () {
-      store.add(new Memo({
-        categoryId: this.editor.markdownCategoryId,
-        title: this.editor.markdownTitle,
-        type: 0,
-        content: this.editor.markdownContent,
-      }));
-      helpers.hideEditorLayer('.editor-markdown');
-      store.saveToLocalStorage();
-      this.editor.markdownContent = this.editor.markdownTitle = '';
-    },
-    launchDoodleEditor (imageData) {
-      let $doodleEditor = helpers.showEditorLayer('.editor-doodle');
-      // 部署画布和控制器相关的方法，提供 imageData 时画出来
-      helpers.initDoodle(
-        $doodleEditor.find('.doodle-content')[0],
-        $doodleEditor.find('.doodle-colors')[0],
-        $doodleEditor.find('.doodle-controllers')[0],
-        imageData,
-      );
-    },
-    saveDoodleMemo () {
-      this.editor.doodleContent = $('.doodle-content')[0].toDataURL();
-      store.add(new Memo({
-        categoryId: this.editor.doodleCategoryId,
-        title: this.editor.doodleTitle,
-        type: 1,
-        content: this.editor.doodleContent,
-      }));
-      helpers.hideEditorLayer('.editor-doodle');
-      store.saveToLocalStorage();
-      this.editor.doodleContent = this.editor.doodleContent = '';
+    createDoodle () {
+      this.$broadcast('createDoodle');
     },
   },
   computed: {
@@ -313,11 +220,18 @@ export default {
       });
     },
   },
+  events: {
+    editMarkdown (memo) {
+      this.$broadcast('editMarkdown', memo);
+    },
+    editDoodle (memo) {
+      this.$broadcast('editDoodle', memo);
+    },
+  },
   // 周期钩子
   ready () {
     this.filterBy(0, this.queryString);
     this.sortByTimeOrTitle('title');
-    helpers.resizeMemos();
   },
 };
 </script>
