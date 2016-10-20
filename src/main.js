@@ -7,9 +7,9 @@ Vue.config.debug = true;
 new Vue({
   el: 'body',
   components: { App }
-})
+});
 
-//
-$(window).on('resize load', () => {
+// 调整所有 memo 的尺寸以响应浏览器
+$(window).on('resize', () => {
   helpers.resizeMemos();
 });

@@ -66,17 +66,14 @@ blockquote
   -webkit-user-select none
 
   .navbar-right
-    padding-right 0
 
     a
-      cursor pointer !important
-      line-height 24px !important
-
-    .navbar-form
-      padding-right 0
+      cursor pointer
 
     .search-box
+      width calc(100% - 24px)
       min-width 180px
+      margin 6px 12px
 
   .dropdown-toggle
     position relative
@@ -87,17 +84,17 @@ blockquote
       background rgb(231, 231, 231) !important
 
     &:after
-      content ' '
+      position absolute
       width 24px
       height 24px
-      background url("/src/images/icons/icon-dropdown.png") 0 0 no-repeat
-      position absolute
-      right 18px
-      opacity .6
       top 8px
+      right 18px
+      background url("/src/images/icons/icon-dropdown.png") 0 0 no-repeat
+      content ' '
+      opacity .6
 
       @media (min-width 768px)
-        top 15px
+        top 13px
 
   .count
     border-radius 5px
@@ -113,15 +110,12 @@ blockquote
 
 #memos
   min-height 800px
-  padding 0 6px
-
-#memos-wrapper
-  margin 0 auto
+  margin-top 6px
+  padding 0
 
 .memo-container
-  padding 5px
+  padding 6px
   float left
-  margin-top 10px
 
 .memo
   position relative
@@ -132,17 +126,16 @@ blockquote
   transition all .15s ease-in-out
 
   &:hover
-    box-shadow 0 0 10px 0 $dark-grey
+    box-shadow 0 0 6px 0 $dark-grey
 
     .mark
       display block
 
   &[data-completed=true]
-    border-color $dark-blue
+    border-color $tint-blue
 
     .mark
       display block
-
 
   .mark
     display none
@@ -159,8 +152,6 @@ blockquote
 
     &:hover
       transform scale(1.2)
-
-
 
   .memo-heading
     position relative
@@ -353,7 +344,7 @@ blockquote
 
         &:hover,
         &.current
-          box-shadow 0 0 4px $bootstrap-black
+          box-shadow 0 0 6px $bootstrap-black
         &[data-color=green]
           background-color $bootstrap-green
         &[data-color=yellow]
@@ -373,11 +364,13 @@ blockquote
 
 @media (max-width 768px)
 
-  .memo-container
-    width 50%
+  #memos
+    padding 0 5px
 
-    .search-box
-      text-indent 18px
+  .memo-container
+    padding 2px
+    margin-top 0
+    width 50%
 
 @media (min-width 768px) and (max-width 992px)
   .memo-container

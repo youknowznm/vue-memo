@@ -111,8 +111,8 @@ const initCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
       let stX, stY;
       switch (evt.type) {
         case 'touchstart':
-          stX = evt.targetTouches[0].clientX;
-          stY = evt.targetTouches[0].clientY;
+          stX = evt.touches[0].clientX;
+          stY = evt.touches[0].clientY;
           break;
         default:
           stX = evt.offsetX;

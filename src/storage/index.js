@@ -113,7 +113,7 @@ class VueMemoStore {
 
     let m5 = new Memo({
       categoryId: 1,
-      title: '5. Westworld - Quote',
+      title: '6. Westworld - Quote',
       type: 0,
       content: `> By most mechanical and dirty hand,\n\n> I shall have such revenges on you both.\n\n> The things I will do,\n\n> what they are yet I know not,\n\n> but they will be the terrors of the earth.`,
     });
@@ -122,7 +122,7 @@ class VueMemoStore {
 
     let m6 = new Memo({
       categoryId: 2,
-      title: '6. 凛冬的寒风快点出版啊！！',
+      title: '5. 凛冬的寒风快点出版啊！！',
       type: 1,
     });
     m6.timeStamp = toReadableDate(new Date(Date.parse('Oct 5, 2016')));

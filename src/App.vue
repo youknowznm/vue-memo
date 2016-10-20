@@ -83,14 +83,12 @@
 
             <!--  字符串过滤器  -->
             <li>
-              <form class="navbar-form">
-                <input
-                  type="text"
-                  class="search-box form-control"
-                  placeholder="过滤标题、内容、时间戳"
-                  v-model="queryString"
-                  @keyup="filterBy(currentCategoryId, queryString)">
-              </form>
+              <input
+                type="text"
+                class="search-box form-control"
+                placeholder="过滤标题、内容、时间戳"
+                v-model="queryString"
+                @keyup="filterBy(currentCategoryId, queryString)">
             </li>
             <!--  -->
 
@@ -113,6 +111,7 @@
 </template>
 
 <script>
+import helpers from './helpers';
 import storeUtil from './storage';
 import memoItem from './components/memoItem.vue';
 import memoEditor from './components/memoEditor.vue';
@@ -134,6 +133,7 @@ export default {
         2: '生活',
         3: '学习',
       },
+      helpers,
     };
   },
   components: {
@@ -233,6 +233,11 @@ export default {
     this.filterBy(0, this.queryString);
     this.sortByTimeOrTitle('title');
   },
+  watch: {
+    memosFiltered () {
+      helpers.resizeMemos();
+    }
+  }
 };
 </script>
 
