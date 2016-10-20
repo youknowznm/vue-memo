@@ -111,14 +111,15 @@ const initCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
       let stX, stY;
       switch (evt.type) {
         case 'touchstart':
-          stX = evt.touches[0].clientX;
-          stY = evt.touches[0].clientY;
+          stX = evt.targetTouches[0].clientX;
+          stY = evt.targetTouches[0].clientY;
           break;
         default:
           stX = evt.offsetX;
           stY = evt.offsetY;
           break;
       }
+      console.log('st', stX, stY);
       hasOnGoingStroke = true;
       ctx.strokeStyle = selectedColor.opagueCode;
       ctx.lineWidth = 5;
@@ -141,6 +142,7 @@ const initCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
             mdY = evt.offsetY;
             break;
         }
+        console.log('md', mdX, mdY);
         ctx.lineTo(mdX, mdY);
         ctx.stroke();
       }
@@ -161,6 +163,7 @@ const initCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
         ctx.strokeStyle = selectedColor.regularCode;
         ctx.lineTo(edX, edY);
         ctx.stroke();
+        console.log('ed', edX, edY);
         hasOnGoingStroke = false;
         saveImageData();
       }
