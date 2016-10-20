@@ -99,7 +99,7 @@ class VueMemoStore {
       type: 1,
     });
     m3.timeStamp = toReadableDate(new Date(Date.parse('Oct 6, 2016')));
-    m3.getImageData('/src/images/vue-logo.png');
+    m3.getImageData('./src/images/vue-logo.png');
     this.add(m3);
 
     let m4 = new Memo({
@@ -126,7 +126,7 @@ class VueMemoStore {
       type: 1,
     });
     m6.timeStamp = toReadableDate(new Date(Date.parse('Oct 5, 2016')));
-    m6.getImageData('/src/images/the-winds-of-winter.png');
+    m6.getImageData('./src/images/the-winds-of-winter.png');
     this.add(m6);
 
     let m7 = new Memo({
@@ -144,7 +144,7 @@ class VueMemoStore {
       type: 1,
     });
     m8.timeStamp = toReadableDate(new Date(Date.parse('Oct 2, 2016')));
-    m8.getImageData('/src/images/30stm.png');
+    m8.getImageData('./src/images/30stm.png');
     this.add(m8);
 
 
