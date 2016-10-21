@@ -10,20 +10,20 @@ const showEditorLayer = ($editorLayer) => {
   $(window).scrollTop(0);
   $('.cover-layer').fadeIn();
   $editorLayer.fadeIn();
-  $('.navbar')
-    .css('padding-right', '14px');
-  $('body')
-    .css('padding-right', '14px')
-    .css('overflow', 'hidden');
+  $('body').css('overflow', 'hidden');
+  if (!window.isMobile) {
+    $('.navbar').css('padding-right', '15px');
+    $('body').css('padding-right', '15px');
+  }
 };
 const hideEditorLayer = ($editorLayer) => {
   $('.cover-layer').fadeOut();
   $editorLayer.hide();
-  $('.navbar')
-    .css('padding-right', '0');
-  $('body')
-    .css('padding-right', '0')
-    .css('overflow', 'scroll');
+  $('body').css('overflow', 'scroll');
+  if (!window.isMobile) {
+    $('.navbar').css('padding-right', '0px');
+    $('body').css('padding-right', '0px');
+  }
 };
 
 // 初始化涂鸦编辑器
