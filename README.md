@@ -16,11 +16,12 @@ TODO：
   - 编辑笔记时的输入内容验证
   - 用 Firebase 代替本地存储
 
+---
 
-更新日志：
-  - 10月21日
-    * 改善了移动端编辑器的体验
+10月21日更新：
+  - 改善了移动端编辑器的体验：在移动端限制主容器的高度并使溢出内容隐藏，避免编辑器里的 touch 事件造成视口滚动
 
+---
   
 ![桌面端](https://github.com/youknowznm/youknowznm.github.io/blob/master/hehehe/desktop.png)
 
