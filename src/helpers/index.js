@@ -108,18 +108,17 @@ const initCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
     .click();
   // canvas 鼠标事件
   $canvas.on('mousedown touchstart', (evt) => {
-      let stX, stY;
+      let x, y;
       switch (evt.type) {
         case 'touchstart':
-          stX = evt.targetTouches[0].clientX;
-          stY = evt.targetTouches[0].clientY;
+          x = evt.touches[0].clientX - $canvas.offset().left;
+          y = evt.touches[0].clientY - $canvas.offset().top;
           break;
         default:
-          stX = evt.offsetX;
-          stY = evt.offsetY;
+          x = evt.offsetX;
+          y = evt.offsetY;
           break;
       }
-      console.log('st', stX, stY);
       hasOnGoingStroke = true;
       ctx.strokeStyle = selectedColor.opagueCode;
       ctx.lineWidth = 5;
@@ -127,43 +126,41 @@ const initCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
       ctx.lineJoin = 'round';
       ctx.imageSmoothingEnabled = true;
       ctx.beginPath();
-      ctx.moveTo(stX, stY);
+      ctx.moveTo(x, y);
     })
     .on('mousemove touchmove', (evt) => {
       if (hasOnGoingStroke === true) {
-        let mdX, mdY;
+        let x, y;
         switch (evt.type) {
           case 'touchmove':
-            mdX = evt.changedTouches[0].clientX;
-            mdY = evt.changedTouches[0].clientY;
+            x = evt.changedTouches[0].clientX - $canvas.offset().left;
+            y = evt.changedTouches[0].clientY - $canvas.offset().top;
             break;
           default:
-            mdX = evt.offsetX;
-            mdY = evt.offsetY;
+            x = evt.offsetX;
+            y = evt.offsetY;
             break;
         }
-        console.log('md', mdX, mdY);
-        ctx.lineTo(mdX, mdY);
+        ctx.lineTo(x, y);
         ctx.stroke();
       }
     })
     .on('mouseout mouseup touchend', (evt) => {
       if (hasOnGoingStroke === true) {
-        let edX, edY;
+        let x, y;
         switch (evt.type) {
           case 'touchend':
-            edX = evt.changedTouches[0].clientX;
-            edY = evt.changedTouches[0].clientY;
+            x = evt.changedTouches[0].clientX - $canvas.offset().left;
+            y = evt.changedTouches[0].clientY - $canvas.offset().top;
             break;
           default:
-            edX = evt.offsetX;
-            edY = evt.offsetY;
+            x = evt.offsetX;
+            y = evt.offsetY;
             break;
         }
         ctx.strokeStyle = selectedColor.regularCode;
-        ctx.lineTo(edX, edY);
+        ctx.lineTo(x, y);
         ctx.stroke();
-        console.log('ed', edX, edY);
         hasOnGoingStroke = false;
         saveImageData();
       }

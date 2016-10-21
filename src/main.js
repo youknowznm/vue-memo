@@ -14,6 +14,13 @@ window.isMobile =
   ? true
   : false;
 
+// 是的话，限制 vue-memo 元素，使溢出滚动
+if (window.isMobile) {
+  $('#vue-memo')
+    .height(window.innerHeight - 60)
+    .css('overflow', 'scroll');
+}
+
 // 调整所有 memo 的尺寸以响应浏览器
 $(window).on('resize', () => {
   helpers.resizeMemos();
