@@ -42,7 +42,7 @@ export default {
   methods: {
     marked,
     deleteMemo () {
-      if (confirm(`确定删除「${this.title}」吗？此操作不可撤销。`)) {
+      if (confirm(`确定删除「${this.memo.title}」吗？此操作不可撤销。`)) {
         store.remove(this.memo);
         store.saveToLocalStorage();
       }

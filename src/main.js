@@ -25,3 +25,15 @@ if (window.isMobile) {
 $(window).on('resize', () => {
   helpers.resizeMemos();
 });
+
+// 一个小小的视觉效果
+$('body').on('mousemove', (evt) => {
+  $('body')
+    .css('background-position-x', Math.ceil(evt.pageX / 40))
+    .css('background-position-y', Math.ceil(evt.pageY / 40));
+});
+window.ondeviceorientation = (evt) => {
+  $('body')
+    .css('background-position-x', evt.gamma)
+    .css('background-position-y', evt.beta);
+};
