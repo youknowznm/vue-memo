@@ -10,12 +10,16 @@
   - 暂存未确认保存的笔记
   - 支持 markdown 和涂鸦两种记录方式
   - 用 localStorage 存取数据，不手动 clear 的话算是个本地的简易数据库吧
-  - 移动端适配（虽然体验不如桌面……不过我也不是设计师，已经尽力了）
+  - 移动端适配
   
-TODO
-  - **移动端的涂鸦有个 bug 正在修…**
+TODO：
   - 编辑笔记时的输入内容验证
   - 用 Firebase 代替本地存储
+
+
+更新日志：
+  - 10月21日
+    * 改善了移动端编辑器的体验
 
   
 ![桌面端](https://github.com/youknowznm/youknowznm.github.io/blob/master/hehehe/desktop.png)
