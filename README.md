@@ -1,6 +1,6 @@
 # vue-memo
 
-DEMO在[这里](https://youknowznm.github.io/demos/vue_memo/)。
+> DEMO在[这里](https://youknowznm.github.io/demos/vue_memo/)。
 
 一个用 vue 1.0 写的笔记本应用，实现了以下功能：
   - 增删、编辑笔记
