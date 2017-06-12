@@ -26,7 +26,7 @@ TODO：
   - 改善了移动端编辑器的体验：在移动端限制主容器的高度并使溢出内容隐藏，避免编辑器里的`touch`事件造成视口滚动
 
 ---
-  
+
 ![桌面端](https://github.com/youknowznm/youknowznm.github.io/blob/master/hehehe/desktop.png)
 
 ![移动端](https://github.com/youknowznm/youknowznm.github.io/blob/master/hehehe/mobile.png)
@@ -39,5 +39,5 @@ npm install
 
 npm run dev
 
-npm run build
+在 8080 端口查看
 ```
