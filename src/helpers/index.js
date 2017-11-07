@@ -68,6 +68,7 @@ const initCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
   // 方法：将 imageData 写入一个 Image 对象，画在 canvas 上
   const loadImageData = (data) => {
     let img = new Image();
+    img.crossOrigin = 'Anonymous';
     img.src = data;
     img.onload = () => {
       clearCanvas();
