@@ -1,6 +1,6 @@
 # vue-memo
 
-> DEMO在[这里](https://youknowznm.github.io/demos/vue_memo/)。
+> DEMO在[这里](https://youknowznm.github.io/demos/vue-memo/)。
 
 基于 Vue.js 的记事本应用，实现了以下功能：
   - 增删、编辑笔记
@@ -27,12 +27,8 @@ TODO：
 
 ---
 
-![桌面端](https://github.com/youknowznm/youknowznm.github.io/blob/master/hehehe/desktop.png)
 
-![移动端](https://github.com/youknowznm/youknowznm.github.io/blob/master/hehehe/mobile.png)
-
-
-## 怎么用？
+#### 本地查看
 
 ``` bash
 npm install
