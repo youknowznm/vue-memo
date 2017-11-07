@@ -27,13 +27,11 @@ TODO：
 
 ---
 
+```bash
+本地预览步骤：
 
-#### 本地查看
+$ npm i
+$ npm run dev
 
-``` bash
-npm install
-
-npm run dev
-
-在 8080 端口查看
+在 8080 端口查看。
 ```
