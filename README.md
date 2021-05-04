@@ -1,6 +1,6 @@
 # vue-memo
 
-[演示](https://youknowznm.github.io/demos/vue-memo/)。
+[演示](https://youknowznm.github.io/demos/vue-memo/)
 
 - 基于 `vue` 的响应式适配的记事本应用
   - 支持 `markdown` 和涂鸦两种记录方式
